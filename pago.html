@@ -1,0 +1,692 @@
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart - Checkout / Pago</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7f9fa;
+            color: #333;
+        }
+
+        /* --- HEADER CON DIFUMINADO AZUL OSCURO A NEGRO --- */
+        header {
+            background: linear-gradient(135deg, #0a192f 0%, #020c1b 50%, #000000 100%);
+            color: #ffffff;
+            padding: 20px 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-seccion h1 {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 162, 255, 0.3);
+        }
+
+        .header-usuario {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-size: 14px;
+        }
+
+        .link-carrito {
+            color: #00a2ff;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .badge-carrito {
+            background-color: #00a2ff;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 12px;
+        }
+
+        /* --- CONTENEDOR DE PERFIL Y TARJETA DESPLEGABLE REUTILIZADA --- */
+        .contenedor-perfil-desplegable {
+            position: relative;
+            display: inline-block;
+        }
+
+        .usuario-perfil {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .usuario-perfil:hover {
+            color: #00a2ff;
+        }
+
+        /* Diseño de tarjeta flotante */
+        .menu-desplegable {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            z-index: 1000;
+            margin-top: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .menu-desplegable.mostrar {
+            display: block;
+        }
+
+        .menu-desplegable a {
+            color: #333333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.2s, color 0.2s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .menu-desplegable a:last-child {
+            border-bottom: none;
+        }
+
+        .menu-desplegable a:hover {
+            background-color: #f8fafc;
+            color: #00a2ff;
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 12px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav ul li a:hover {
+            color: #00a2ff;
+        }
+
+        /* --- ICONO DE CASITA BLANCA EN CSS --- */
+        .icono-casa-blanca {
+            width: 14px;
+            height: 12px;
+            background-color: #ffffff;
+            position: relative;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .icono-casa-blanca::before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            left: -3px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 7px solid #ffffff;
+        }
+
+        .icono-casa-blanca::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 5px;
+            width: 4px;
+            height: 6px;
+            background-color: #020c1b;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .titulo-pagina {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .titulo-pagina::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 45px;
+            height: 3px;
+            background-color: #00a2ff;
+        }
+
+        .contenedor-checkout {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .bloque-formulario {
+            flex: 1.8;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .seccion-form {
+            margin-bottom: 30px;
+        }
+
+        .seccion-form h3 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 18px;
+            color: #111;
+        }
+
+        .grupo-input {
+            margin-bottom: 15px;
+        }
+
+        .grupo-input label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .grupo-input input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .fila-doble {
+            display: flex;
+            gap: 15px;
+        }
+
+        .fila-doble .grupo-input {
+            flex: 1;
+        }
+
+        .opcion-pago {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .campos-tarjeta-desplegable {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background-color: #f8fafc;
+            border-radius: 5px;
+        }
+
+        .campos-tarjeta-desplegable.abierto {
+            max-height: 300px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-top: none;
+        }
+
+        .bloque-resumen {
+            flex: 1;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #eef1f2;
+        }
+
+        .lista-articulos-checkout {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .item-checkout {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 13px;
+        }
+
+        .item-checkout-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-checkout-img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .fila-resumen {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .valor-gratis {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .separador {
+            border-top: 1px solid #eee;
+            margin: 15px 0;
+        }
+
+        .fila-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn-finalizar-compra {
+            width: 100%;
+            background-color: #00a2ff;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           NUEVOS ESTILOS: VENTANA MODAL PARA CERRAR SESIÓN 
+           (Idénticos a tu pantalla de Cocina/Categorías)
+           ========================================================= */
+        .modal-overlay {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo oscurecido difuminado */
+            backdrop-filter: blur(3px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.activo {
+            display: flex;
+        }
+
+        .modal-alerta {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 400px;
+            padding: 35px 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: entradaModal 0.3s ease-out;
+        }
+
+        @keyframes entradaModal {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icono {
+            font-size: 36px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .modal-alerta h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 8px;
+        }
+
+        .modal-alerta p {
+            font-size: 13px;
+            color: #666666;
+            margin-bottom: 25px;
+        }
+
+        .contenedor-botones-modal {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-modal {
+            padding: 11px 22px;
+            font-size: 13px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .btn-modal:active {
+            transform: scale(0.96);
+        }
+
+        .btn-modal-salir {
+            background-color: #ff4d4d; /* Rojo "Sí, salir" */
+            color: white;
+        }
+
+        .btn-modal-salir:hover {
+            background-color: #e04343;
+        }
+
+        .btn-modal-cancelar {
+            background-color: #eaeaea; /* Gris "Cancelar" */
+            color: #333333;
+        }
+
+        .btn-modal-cancelar:hover {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-superior">
+            <div class="logo-seccion">
+                <h1>EcoSmart</h1>
+            </div>
+            <div class="header-usuario">
+                <a href="carrito.html" class="link-carrito" id="boton-header-carrito">🛒 Mi carrito <span class="badge-carrito" id="contador-carrito-circulo">0</span></a>
+                
+                <div class="contenedor-perfil-desplegable">
+                    <a class="usuario-perfil" id="abrir-menu-perfil">
+                        <span id="nombre-usuario-checkout">👤 fabian</span>
+                    </a>
+                    <div class="menu-desplegable" id="menu-desplegable-perfil">
+                        <a href="perfil.html">Ver perfil</a>
+                        <a href="#" id="btn-cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><span class="icono-casa-blanca"></span> Inicio</a></li>
+                <li><a href="cocina.html">Cocina</a></li>
+                <li><a href="limpieza.html">Limpieza</a></li>
+                <li><a href="climatizacion.html">Climatización</a></li>
+                <li><a href="cuidado_personal.html">Cuidado personal</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2 class="titulo-pagina">Finalizar Compra</h2>
+        <div class="contenedor-checkout">
+            <div class="bloque-formulario">
+                <form id="form-pago" onsubmit="procesarPedido(event)">
+                    <div class="seccion-form">
+                        <h3>Información de Envío</h3>
+                        <div class="grupo-input">
+                            <label for="nombre">Nombre Completo</label>
+                            <input type="text" id="nombre" required placeholder="Ej: Fabian Pérez">
+                        </div>
+                        <div class="fila-doble">
+                            <div class="grupo-input">
+                                <label for="telefono">Teléfono / Celular</label>
+                                <input type="tel" id="telefono" required placeholder="Ej: 3001234567">
+                            </div>
+                            <div class="grupo-input">
+                                <label for="ciudad">Ciudad</label>
+                                <input type="text" id="ciudad" required placeholder="Ej: Bogotá">
+                            </div>
+                        </div>
+                        <div class="grupo-input">
+                            <label for="direccion">Dirección de Entrega</label>
+                            <input type="text" id="direccion" required placeholder="Ej: Calle 45 #12-34">
+                        </div>
+                    </div>
+
+                    <div class="seccion-form">
+                        <h3>Método de Pago</h3>
+                        <div class="opcion-pago" onclick="document.getElementById('pago-entrega').click();">
+                            <input type="radio" id="pago-entrega" name="metodo_pago" value="Contraentrega" checked>
+                            <label for="pago-entrega">💵 Pago Contra Entrega</label>
+                        </div>
+                        <div class="opcion-pago" onclick="document.getElementById('pago-tarjeta').click();">
+                            <input type="radio" id="pago-tarjeta" name="metodo_pago" value="Tarjeta">
+                            <label for="pago-tarjeta">💳 Tarjeta de Crédito / Débito</label>
+                        </div>
+                        <div id="desplegable-tarjeta" class="campos-tarjeta-desplegable">
+                            <div class="grupo-input">
+                                <label for="num-tarjeta">Número de la Tarjeta</label>
+                                <input type="text" id="num-tarjeta" placeholder="0000 0000 0000 0000">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="bloque-resumen">
+                <h3>Tu Pedido</h3>
+                <div class="lista-articulos-checkout" id="mini-lista-articulos"></div>
+                <div class="separador"></div>
+                <div class="fila-resumen"><span>subtotal:</span><span id="resumen-subtotal">$0</span></div>
+                <div class="fila-resumen"><span>shipping:</span><span class="valor-gratis">Gratis</span></div>
+                <div class="fila-resumen"><span>VAT:</span><span id="resumen-vat">$0</span></div>
+                <div class="separador"></div>
+                <div class="fila-total"><span>total:</span><span id="resumen-total">$0</span></div>
+                <button type="submit" form="form-pago" class="btn-finalizar-compra">Confirmar Pedido</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="capa-modal-salir">
+        <div class="modal-alerta">
+            <span class="modal-icono">👋</span>
+            <h3>¿Seguro que quieres cerrar sesión?</h3>
+            <p>Tendrás que volver a ingresar tus datos la próxima vez.</p>
+            <div class="contenedor-botones-modal">
+                <button class="btn-modal btn-modal-salir" id="confirmar-cierre-btn">Sí, salir</button>
+                <button class="btn-modal btn-modal-cancelar" id="cancelar-cierre-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+// =========================================================
+// SENSADO DE SESIÓN ACTIVA
+// =========================================================
+const datosSesion = JSON.parse(localStorage.getItem("sesion_activa_ecosmart"));
+const usuarioActivo = datosSesion ? datosSesion.nombre : 'Invitado';
+
+const txtNombreUsuario = document.getElementById('nombre-usuario-checkout');
+if (txtNombreUsuario) {
+    txtNombreUsuario.textContent = `👤 ${usuarioActivo.toUpperCase()}`;
+}
+
+// =========================================================
+// COMPORTAMIENTO TARJETA DESPLEGABLE DE PERFIL
+// =========================================================
+const btnPerfil = document.getElementById('abrir-menu-perfil');
+const menuPerfil = document.getElementById('menu-desplegable-perfil');
+
+if (btnPerfil && menuPerfil) {
+    btnPerfil.addEventListener('click', (e) => {
+        e.preventDefault();
+        menuPerfil.classList.toggle('mostrar');
+    });
+
+    window.addEventListener('click', (e) => {
+        if (!btnPerfil.contains(e.target) && !menuPerfil.contains(e.target)) {
+            menuPerfil.classList.remove('mostrar');
+        }
+    });
+}
+
+// =========================================================
+// CONTROL DE LA VENTANA MODAL EMERGENTE PERSONALIZADA
+// =========================================================
+const btnCerrarSesion = document.getElementById('btn-cerrar-sesion');
+const capaModal = document.getElementById('capa-modal-salir');
+const btnConfirmarSalir = document.getElementById('confirmar-cierre-btn');
+const btnCancelarSalir = document.getElementById('cancelar-cierre-btn');
+
+// Al darle clic a "Cerrar sesión" en la tarjeta, abre tu ventana emergente
+if (btnCerrarSesion) {
+    btnCerrarSesion.addEventListener('click', (e) => {
+        e.preventDefault();
+        menuPerfil.classList.remove('mostrar'); // Escondemos el desplegable chiquito
+        capaModal.classList.add('activo');       // Mostramos el modal centrado en pantalla
+    });
+}
+
+// Si pulsa "Cancelar"
+if (btnCancelarSalir) {
+    btnCancelarSalir.addEventListener('click', () => {
+        capaModal.classList.remove('activo');
+    });
+}
+
+// Si pulsa "Sí, salir", borra datos y redirige a index
+if (btnConfirmarSalir) {
+    btnConfirmarSalir.addEventListener('click', () => {
+        localStorage.removeItem("sesion_activa_ecosmart");
+        capaModal.classList.remove('activo');
+        window.location.href = "index.html"; 
+    });
+}
+
+// Cerrar si hace clic fuera del cuadro blanco
+if (capaModal) {
+    capaModal.addEventListener('click', (e) => {
+        if (e.target === capaModal) {
+            capaModal.classList.remove('activo');
+        }
+    });
+}
+
+// =========================================================
+// FUNCIONALIDAD ADICIONAL DEL CARRITO Y CHECKOUT
+// =========================================================
+const txtSubtotal = document.getElementById('resumen-subtotal');
+const txtVat = document.getElementById('resumen-vat');
+const txtTotal = document.getElementById('resumen-total');
+const circuloContador = document.getElementById('contador-carrito-circulo');
+const miniLista = document.getElementById('mini-lista-articulos');
+
+let carrito = JSON.parse(localStorage.getItem('carrito_ecosmart')) || JSON.parse(localStorage.getItem('ecosmart_carrito')) || [];
+
+if (carrito.length === 0) {
+    if (miniLista) miniLista.innerHTML = `<p style="font-size: 12px; color: #999; text-align: center;">No hay artículos en tu cuenta.</p>`;
+} else {
+    if (miniLista) {
+        miniLista.innerHTML = '';
+        carrito.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-checkout';
+            itemDiv.innerHTML = `
+                <div class="item-checkout-info">
+                    <div class="item-checkout-nombre">${item.nombre} x${item.cantidad}</div>
+                </div>
+                <div class="item-checkout-precio">$${(item.precio * item.cantidad).toLocaleString('es-CO')}</div>
+            `;
+            miniLista.appendChild(itemDiv);
+        });
+    }
+}
+
+const totalArticulos = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+const subtotalGeneral = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+const vat = Math.round(subtotalGeneral * 0.19);
+const totalDefinitivo = subtotalGeneral + vat;
+
+if (circuloContador) circuloContador.innerText = totalArticulos;
+if (txtSubtotal) txtSubtotal.innerText = `$${subtotalGeneral.toLocaleString('es-CO')}`;
+if (txtVat) txtVat.innerText = `$${vat.toLocaleString('es-CO')}`;
+if (txtTotal) txtTotal.innerText = `$${totalDefinitivo.toLocaleString('es-CO')}`;
+
+function procesarPedido(event) {
+    event.preventDefault();
+    alert(`¡Pedido registrado con éxito!`);
+    localStorage.removeItem('carrito_ecosmart');
+    localStorage.removeItem('ecosmart_carrito');
+    window.location.href = 'compra-exitosa.html';
+}
+</script>
+</body>
+</html>

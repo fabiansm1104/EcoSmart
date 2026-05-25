@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart - Finalizar Compra</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #f4f7fc 0%, #ffffff 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center; color: #111111;">
+
+    <div style="background: linear-gradient(to right, #000000 20%, #0a1931 100%); width: 100%; padding: 20px 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 30px;">
+        <div style="display: flex; align-items: center; gap: 18px;">
+            <img src="../img/logo.png" alt="Logo EcoSmart" style="width: 110px; height: auto;">
+            <h1 style="font-size: 46px; color: #ffffff; margin: 0; font-weight: 900; letter-spacing: 1px;">EcoSmart</h1>
+        </div>
+    </div>
+
+    <main style="width: 100%; max-width: 950px; padding: 0 20px; box-sizing: border-box; margin-bottom: 50px;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <a href="carrito.html" style="color: #005c92; text-decoration: none; font-weight: bold; font-size: 16px;">← Volver al Carrito</a>
+            <h2 style="margin: 0; font-size: 26px; font-weight: bold;">Finalizar Pedido</h2>
+        </div>
+
+        <div style="display: flex; gap: 30px; align-items: flex-start;">
+            
+            <div style="flex: 1.8; display: flex; flex-direction: column; gap: 25px;">
+                
+                <div style="background-color: #ffffff; border: 1px solid #e1e8f5; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); text-align: left;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 18px; color: #000000; border-bottom: 2px solid #f0f4f8; padding-bottom: 8px; font-weight: bold;">1. Información de Entrega</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px; color: #4a5568;">Teléfono de Contacto</label>
+                        <input type="text" id="chk-telefono" placeholder="Ej: +57 312 456 7890" style="width: 100%; padding: 11px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; outline: none; font-size: 14px;">
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px; color: #4a5568;">Dirección de Envío Completa</label>
+                        <input type="text" id="chk-direccion" placeholder="Ej: Calle 26 #68b, Bogotá" style="width: 100%; padding: 11px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; outline: none; font-size: 14px;">
+                    </div>
+                </div>
+
+                <div style="background-color: #ffffff; border: 1px solid #e1e8f5; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); text-align: left;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 18px; color: #000000; border-bottom: 2px solid #f0f4f8; padding-bottom: 8px; font-weight: bold;">2. Método de Pago</h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e1e8f5; border-radius: 6px; cursor: pointer; background-color: #f8fafc;">
+                            <input type="radio" name="pago" value="tarjeta" checked onchange="conmutarPago('tarjeta')">
+                            <span style="font-size: 15px; font-weight: bold;">💳 Tarjeta de Crédito / Débito</span>
+                        </label>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #e1e8f5; border-radius: 6px; cursor: pointer;">
+                            <input type="radio" name="pago" value="alternativo" onchange="conmutarPago('alternativo')">
+                            <span style="font-size: 15px; font-weight: bold;">💵 Efectivo / Transferencia Bancaria alternativa</span>
+                        </label>
+                    </div>
+
+                    <div id="wrapper-campos-tarjeta" style="margin-top: 20px; display: block;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px; color: #4a5568;">Número de Tarjeta</label>
+                            <input type="text" placeholder="**** **** **** 1234" style="width: 100%; padding: 11px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; outline: none; font-size: 14px;">
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            <label style="display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px; color: #4a5568;">Contraseña / Código de Seguridad (CVV)</label>
+                            <input type="password" placeholder="***" style="width: 60px; padding: 11px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; outline: none; font-size: 14px; text-align: center;">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="flex: 1.2; background-color: #ffffff; border: 1px solid #e1e8f5; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); text-align: left; position: sticky; top: 20px; box-sizing: border-box;">
+                <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 18px; color: #000000; border-bottom: 2px solid #f0f4f8; padding-bottom: 8px; font-weight: bold;">Tu Pedido</h3>
+                
+                <div id="chk-lista-productos" style="max-height: 240px; overflow-y: auto; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid #f0f4f8; padding-bottom: 15px;">
+                    </div>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: #4a5568;">
+                    <span>Artículos totales:</span>
+                    <strong id="chk-cantidad" style="color: #000000;">0</strong>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 16px; color: #000000;">
+                    <span>Total a pagar:</span>
+                    <strong id="chk-total" style="color: #2e7d32; font-size: 22px; font-weight: bold;">$0</strong>
+                </div>
+
+                <button onclick="procesarCompraFinal()" style="width: 100%; background-color: #005c92; color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s;">
+                    Confirmar Pedido
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Recuperar lista completa de productos añadidos al carrito
+        let carrito = JSON.parse(localStorage.getItem("carrito_ecosmart")) || [];
+        const contenedorLista = document.getElementById("chk-lista-productos");
+
+        if (carrito.length === 0) {
+            contenedorLista.innerHTML = `<p style="font-size:13px; color:#888; text-align:center; margin:0;">No hay productos en el pedido.</p>`;
+        } else {
+            contenedorLista.innerHTML = "";
+            carrito.forEach(item => {
+                const itemDiv = document.createElement("div");
+                itemDiv.style = "display: flex; align-items: center; gap: 12px; font-size: 13px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 8px;";
+                itemDiv.innerHTML = `
+                    <img src="${item.imagen}" style="width: 45px; height: 45px; object-fit: contain; background: #fff; border: 1px solid #eee; border-radius: 4px; padding: 2px;">
+                    <div style="flex-grow: 1; min-width: 0;">
+                        <div style="font-weight: bold; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.nombre}</div>
+                        <div style="color: #666; margin-top: 2px;">Cant: ${item.cantidad}</div>
+                    </div>
+                    <div style="font-weight: bold; color: #2e7d32; text-align: right;">
+                        $${(item.precio * item.cantidad).toLocaleString('es-CO')}
+                    </div>
+                `;
+                contenedorLista.appendChild(itemDiv);
+            });
+        }
+
+        // Cargar los datos globales resumidos para los contadores
+        const resumen = JSON.parse(localStorage.getItem("resumen_compra_ecosmart"));
+        if (resumen) {
+            document.getElementById("chk-cantidad").textContent = resumen.amount;
+            document.getElementById("chk-total").textContent = resumen.total;
+        }
+
+        // Auto-completar dirección si hay registros en el perfil
+        const direcciones = JSON.parse(localStorage.getItem("direcciones_ecosmart")) || [];
+        if (direcciones.length > 0) {
+            document.getElementById("chk-direccion").value = direcciones[0].texto;
+        }
+    });
+
+    function conmutarPago(tipo) {
+        const wrapper = document.getElementById("wrapper-campos-tarjeta");
+        if (tipo === 'tarjeta') {
+            wrapper.style.display = "block";
+        } else {
+            wrapper.style.display = "none";
+        }
+    }
+
+    function procesarCompraFinal() {
+        const tel = document.getElementById("chk-telefono").value.trim();
+        const dir = document.getElementById("chk-direccion").value.trim();
+
+        if (!tel || !dir) {
+            alert("Por favor rellena la información de entrega (Teléfono y Dirección).");
+            return;
+        }
+
+        // Limpiar almacenamiento local tras la simulación exitosa
+        localStorage.removeItem("carrito_ecosmart");
+        localStorage.removeItem("resumen_compra_ecosmart");
+
+        alert("¡Gracias por tu Compra!\n\nTe llegará una notificación a tu correo sobre la confirmación de tu pedido.");
+        window.location.href = "index.html";
+    }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart - Registro</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #e3effa 0%, #ffffff 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center;">
+
+    <div style="background-color: #005c92; width: 100%; padding: 20px 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: 40px;">
+        <div style="display: flex; align-items: center; gap: 18px;">
+            <img src="../img/logo.png" alt="Logo EcoSmart" style="width: 110px; height: auto;">
+            <h1 style="font-size: 46px; color: #ffffff; margin: 0; font-weight: 900; letter-spacing: 1px;">EcoSmart</h1>
+        </div>
+    </div>
+
+    <div style="background-color: #ffffff; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; box-sizing: border-box; margin: 20px;">
+        
+        <div id="contenedor-formulario">
+            <h2 style="margin-top: 0; font-size: 26px; font-weight: bold; color: #111111;">Crear Cuenta</h2>
+            <p style="color: #666666; font-size: 14px; margin-bottom: 30px;">Regístrate en EcoSmart</p>
+            
+            <form id="form-registro">
+                <div style="text-align: left; margin-bottom: 15px;">
+                    <label style="display: block; font-size: 14px; font-weight: bold; margin-bottom: 6px; color: #333333;">Nombre completo</label>
+                    <input type="text" id="reg-nombre" required style="width: 100%; padding: 11px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; outline: none;">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 15px;">
+                    <label style="display: block; font-size: 14px; font-weight: bold; margin-bottom: 6px; color: #333333;">Correo electrónico</label>
+                    <input type="gmail.com" id="reg-correo" required style="width: 100%; padding: 11px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; outline: none;">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 25px;">
+                    <label style="display: block; font-size: 14px; font-weight: bold; margin-bottom: 6px; color: #333333;">Contraseña</label>
+                    <input type="password" id="reg-pass" required style="width: 100%; padding: 11px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; outline: none;">
+                </div>
+                
+                <button type="submit" id="btn-registrarse" style="width: 100%; background-color: #00a2ff; color: white; border: none; padding: 14px; font-weight: bold; font-size: 16px; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Registrarse</button>
+                
+                <div id="error-mensaje" class="error-registro-texto"></div>
+            </form>
+            
+            <p style="font-size: 14px; text-align: center; color: #555555; margin-top: 25px;">
+                ¿Ya tienes cuenta? <a href="login.html" style="color: #00a2ff; text-decoration: none; font-weight: bold;">Inicia sesión</a>
+            </p>
+        </div>
+
+        <div id="mensaje-exito" class="mensaje-exito-pantalla">
+            <h2 style="font-size: 32px; margin-bottom: 10px;">🎉 ¡Registro Exitoso!</h2>
+            <p style="margin-bottom: 5px; font-weight: bold; color: #333;">Tu cuenta ha sido creada con éxito.</p>
+            <p style="color: #666666; margin-top: 0;">Redirigiendo a la pantalla de ingreso...</p>
+        </div>
+    </div>
+
+    <style>
+        /* Contenedor del mensaje de éxito */
+        .mensaje-exito-pantalla {
+            display: none;
+            text-align: center;
+            animation: aparecerSuave 0.5s ease forwards;
+            padding: 20px 0;
+        }
+
+        .mensaje-exito-pantalla h2 {
+            color: #00a2ff;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        /* Efecto para ocultar el formulario con animación */
+        .ocultar-formulario {
+            animation: desaparecerHaciaArriba 0.5s ease forwards;
+        }
+
+        /* Animaciones */
+        @keyframes aparecerSuave {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes desaparecerHaciaArriba {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Estilo para el texto de error integrado */
+        .error-registro-texto {
+            color: #ff4d4d;
+            font-size: 14px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+            font-weight: bold;
+            animation: aparecerSuave 0.3s ease;
+        }
+    </style>
+
+    <script>
+    document.getElementById("form-registro").addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const nombre = document.getElementById("reg-nombre").value.trim();
+        const correo = document.getElementById("reg-correo").value.trim();
+        const pass = document.getElementById("reg-pass").value.trim();
+        const errorMensaje = document.getElementById("error-mensaje");
+        const btnRegistrarse = document.getElementById("btn-registrarse");
+        const contenedorFormulario = document.getElementById("contenedor-formulario");
+        const mensajeExito = document.getElementById("mensaje-exito");
+
+        // Ocultar errores previos
+        errorMensaje.style.display = "none";
+
+        // === VALIDACIÓN ESTRICTA DE CORREO (.com, .net, .org, etc.) ===
+        const reglaCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+        if (!reglaCorreo.test(correo)) {
+            errorMensaje.innerText = "❌ Por favor, ingresa un correo válido (ejemplo: usuario@gmail.com).";
+            errorMensaje.style.display = "block";
+            return; // Frena el proceso
+        }
+
+        const usuarios = JSON.parse(localStorage.getItem("usuarios_ecosmart")) || [];
+        
+        // Validar si el correo ya existe
+        if(usuarios.find(u => u.correo === correo)) {
+            errorMensaje.innerText = "❌ Este correo ya está registrado en la tienda.";
+            errorMensaje.style.display = "block";
+            return;
+        }
+
+        // Guardar nuevo usuario si pasa los filtros anteriores
+        usuarios.push({ nombre, correo, pass });
+        localStorage.setItem("usuarios_ecosmart", JSON.stringify(usuarios));
+
+        // Animación de carga simulada y cambio de interfaz
+        btnRegistrarse.innerText = "Procesando...";
+        btnRegistrarse.disabled = true;
+
+        setTimeout(() => {
+            contenedorFormulario.classList.add("ocultar-formulario");
+            
+            setTimeout(() => {
+                contenedorFormulario.style.display = "none";
+                mensajeExito.style.display = "block";
+                
+                // Redirigir al login después de 2.5 segundos
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2500);
+                
+            }, 500);
+        }, 600);
+    });
+    </script>
+</body>
+
+</html>

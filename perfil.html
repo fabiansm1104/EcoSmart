@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart - Mi Perfil</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #f4f7fc 0%, #ffffff 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center; color: #111111;">
+
+    <div style="background: linear-gradient(to right, #000000 20%, #0a1931 100%); width: 100%; padding: 20px 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 30px;">
+        <div style="display: flex; align-items: center; gap: 18px;">
+            <img src="../img/logo.png" alt="Logo EcoSmart" style="width: 110px; height: auto;">
+            <h1 style="font-size: 46px; color: #ffffff; margin: 0; font-weight: 900; letter-spacing: 1px;">EcoSmart</h1>
+        </div>
+    </div>
+
+    <div style="width: 100%; max-width: 950px; margin-bottom: 20px; padding: 0 20px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;">
+        <a href="index.html" style="color: #005c92; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; font-size: 16px;">
+            <span>⌂</span> Volver al Inicio
+        </a>
+        <a href="carrito.html" style="color: #111111; text-decoration: none; font-weight: bold; font-size: 16px; display: flex; align-items: center; gap: 6px;">
+            🛒 Mi carrito
+        </a>
+    </div>
+
+    <div style="background-color: #ffffff; width: 100%; max-width: 950px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e1e8f5; display: flex; flex-direction: row; overflow: hidden; margin-bottom: 40px; box-sizing: border-box;">
+        
+        <div style="background-color: #1a202c; padding: 40px 30px; width: 30%; display: flex; flex-direction: column; align-items: center; text-align: center; color: #ffffff;">
+            <div style="width: 130px; height: 130px; background: linear-gradient(135deg, #005c92 0%, #00a2ff 100%); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 65px; color: #ffffff; box-shadow: 0 6px 20px rgba(0,162,255,0.3); margin-bottom: 20px;">
+                👤
+            </div>
+            <h2 id="perf-usuario" style="margin: 0; font-size: 24px; font-weight: bold; color: #ffffff;">Fenix</h2>
+            <p style="margin: 8px 0 30px 0; font-size: 13px; color: #00a2ff; font-weight: bold; background-color: rgba(0,162,255,0.15); padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(0,162,255,0.3);">Cliente EcoSmart</p>
+            
+            <button id="btn-cerrar-sesion" style="width: 100%; background-color: #ff3333; color: white; border: none; padding: 12px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Cerrar Sesión</button>
+        </div>
+
+        <div style="padding: 40px; width: 70%; box-sizing: border-box; background-color: #ffffff;">
+            <h3 style="margin-top: 0; margin-bottom: 25px; font-size: 20px; color: #000000; border-bottom: 2px solid #f0f4f8; padding-bottom: 10px; text-align: left; font-weight: bold;">Información Personal</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px 30px; text-align: left; margin-bottom: 35px;">
+                <div>
+                    <label style="display: block; font-size: 12px; color: #718096; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.5px;">NOMBRE DE USUARIO</label>
+                    <div style="font-size: 16px; color: #000000; font-weight: bold;" id="info-username">Fenix</div>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; color: #718096; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.5px;">CORREO ELECTRÓNICO</label>
+                    <div style="font-size: 16px; color: #000000; font-weight: bold;" id="info-email">fenix@gmail.com</div>
+                </div>
+                
+                <div>
+                    <label style="display: block; font-size: 12px; color: #718096; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.5px;">TELÉFONO</label>
+                    <div id="wrapper-telefono" style="font-size: 15px; margin-top: 4px;">
+                        <button onclick="agregarDato('Telefono')" style="background: none; border: none; color: #005c92; font-weight: bold; font-size: 14px; padding: 0; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                            ➕ Agregar Teléfono
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 12px; color: #718096; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.5px;">FECHA DE NACIMIENTO</label>
+                    <div id="wrapper-nacimiento" style="font-size: 15px; margin-top: 4px;">
+                        <button onclick="agregarDato('Fecha de Nacimiento')" style="background: none; border: none; color: #005c92; font-weight: bold; font-size: 14px; padding: 0; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                            ➕ Agregar Fecha
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label style="display: block; font-size: 12px; color: #718096; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.5px;">SEXO</label>
+                    <div style="font-size: 16px; color: #000000; font-weight: bold;">Masculino</div>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; color: #718096; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.5px;">FECHA DE REGISTRO</label>
+                    <div style="font-size: 16px; color: #000000; font-weight: bold;">17 / 05 / 2026</div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 20px; color: #000000; border-bottom: 2px solid #f0f4f8; padding-bottom: 10px; text-align: left; display: flex; justify-content: space-between; align-items: center; font-weight: bold;">
+                <span>📍 Mis Direcciones de Envío</span>
+                <button onclick="abrirModalDireccion()" style="background-color: #005c92; color: white; border: none; padding: 7px 16px; font-size: 13px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background 0.2s;">➕ Agregar</button>
+            </h3>
+
+            <div id="lista-direcciones" style="display: flex; flex-direction: column; gap: 12px; text-align: left;">
+                </div>
+        </div>
+    </div>
+
+    <div id="modal-direccion" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(2px);">
+        <div style="background-color: #ffffff; border: 1px solid #e1e8f5; padding: 30px; border-radius: 10px; width: 100%; max-width: 400px; box-sizing: border-box; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+            <h3 style="margin-top: 0; color: #000000; margin-bottom: 20px; font-weight: bold;">Agregar Nueva Dirección</h3>
+            
+            <div style="text-align: left; margin-bottom: 15px;">
+                <label style="display: block; font-size: 13px; color: #4a5568; margin-bottom: 6px; font-weight: bold;">Etiqueta (Ej: Trabajo, Oficina)</label>
+                <input type="text" id="dir-etiqueta" placeholder="Ej: Oficina" style="width: 100%; padding: 11px; border: 1px solid #cbd5e0; background-color: #ffffff; color: #000000; border-radius: 6px; box-sizing: border-box; outline: none; font-size: 14px;">
+            </div>
+
+            <div style="text-align: left; margin-bottom: 20px;">
+                <label style="display: block; font-size: 13px; color: #4a5568; margin-bottom: 6px; font-weight: bold;">Dirección Completa</label>
+                <input type="text" id="dir-texto" placeholder="Carrera 7 #10-00, Bogotá" style="width: 100%; padding: 11px; border: 1px solid #cbd5e0; background-color: #ffffff; color: #000000; border-radius: 6px; box-sizing: border-box; outline: none; font-size: 14px;">
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button onclick="cerrarModalDireccion()" style="background-color: #e2e8f0; color: #4a5568; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">Cancelar</button>
+                <button onclick="guardarDireccion()" style="background-color: #005c92; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-logout" class="fondo-modal-logout">
+        <div class="contenido-modal-logout">
+            <div id="pantalla-pregunta">
+                <div style="font-size: 40px; margin-bottom: 15px;">👋</div>
+                <h3 style="margin: 0 0 10px 0; font-size: 20px; color: #111;">¿Seguro que quieres cerrar sesión?</h3>
+                <p style="margin: 0 0 25px 0; color: #666; font-size: 14px;">Tu carrito se limpiará y tendrás que volver a ingresar.</p>
+                <div style="display: flex; justify-content: center; gap: 15px;">
+                    <button type="button" id="btn-confirmar-logout-si" class="btn-modal-si">Sí, salir</button>
+                    <button type="button" id="btn-confirmar-logout-no" class="btn-modal-no">Cancelar</button>
+                </div>
+            </div>
+            <div id="pantalla-procesando" style="display: none;">
+                <div class="spinner-carga"></div>
+                <h3 style="margin: 15px 0 0 0; font-size: 18px; color: #111;">Cerrando sesión...</h3>
+                <p style="margin: 5px 0 0 0; color: #888; font-size: 13px;">Limpiando carrito de forma segura</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .fondo-modal-logout {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+        }
+
+        .contenido-modal-logout {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 365px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            animation: entradaSuaveModal 0.3s ease-out;
+        }
+
+        @keyframes entradaSuaveModal {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-modal-si {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .btn-modal-si:hover { background-color: #e03333; }
+
+        .btn-modal-no {
+            background-color: #eeeeee;
+            color: #333333;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .btn-modal-no:hover { background-color: #dddddd; }
+
+        .spinner-carga {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff4d4d;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            animation: girarSpinner 0.8s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes girarSpinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        // 1. CONTROL DE ACCESO Y RENDER DE PERFIL
+        const sesionActiva = JSON.parse(localStorage.getItem("sesion_activa_ecosmart"));
+        if (sesionActiva) {
+            document.getElementById("perf-usuario").textContent = sesionActiva.nombre;
+            document.getElementById("info-username").textContent = sesionActiva.nombre;
+            document.getElementById("info-email").textContent = sesionActiva.email || sesionActiva.correo;
+        } else {
+            alert("No has iniciado sesión. Redirigiendo...");
+            window.location.href = "login.html";
+            return;
+        }
+
+        // 2. LOGICA UNIFICADA PARA DESPLEGAR EL MODAL DE CERRAR SESIÓN
+        const btnCerrarSesion = document.getElementById("btn-cerrar-sesion");
+        const modalLogout = document.getElementById("modal-logout");
+        const btnLogoutSi = document.getElementById("btn-confirmar-logout-si");
+        const btnLogoutNo = document.getElementById("btn-confirmar-logout-no");
+        const pantallaPregunta = document.getElementById("pantalla-pregunta");
+        const pantallaProcesando = document.getElementById("pantalla-procesando");
+
+        if (btnCerrarSesion) {
+            btnCerrarSesion.addEventListener("click", (e) => {
+                e.preventDefault();
+                if (modalLogout && pantallaPregunta && pantallaProcesando) {
+                    pantallaPregunta.style.display = "block";
+                    pantallaProcesando.style.display = "none";
+                    modalLogout.style.display = "flex"; 
+                }
+            });
+        }
+
+        // Cancelar el cierre de sesión
+        if (btnLogoutNo) {
+            btnLogoutNo.addEventListener("click", () => {
+                if (modalLogout) modalLogout.style.display = "none";
+            });
+        }
+
+        // Confirmar la salida (Borra datos y redirige al index)
+        if (btnLogoutSi) {
+            btnLogoutSi.addEventListener("click", () => {
+                if (pantallaPregunta && pantallaProcesando) {
+                    pantallaPregunta.style.display = "none";
+                    pantallaProcesando.style.display = "block";
+                }
+
+                // Limpiar carrito personalizado del usuario logueado actualmente
+                if (sesionActiva && sesionActiva.nombre) {
+                    localStorage.removeItem(`ecosmart_carrito_${sesionActiva.nombre}`);
+                }
+
+                // Limpieza total de sesiones
+                localStorage.removeItem("sesion_activa_ecosmart");
+                localStorage.removeItem('ecosmart_carrito_invitado');
+
+                setTimeout(() => {
+                    // Al estar en la carpeta 'paginas/', subimos un nivel para ir correctamente al index.html
+                    window.location.href = "../index.html";
+                }, 1500);
+            });
+        }
+
+        // Cargar Direcciones al iniciar la vista
+        cargarDirecciones();
+    });
+
+    // 3. FUNCIONES ADICIONALES (DATOS Y DIRECCIONES)
+    function agregarDato(tipo) {
+        const nuevoValor = prompt(`Ingresa tu ${tipo}:`);
+        if (nuevoValor && nuevoValor.trim() !== "") {
+            if (tipo === 'Telefono') {
+                document.getElementById("wrapper-telefono").innerHTML = `<span style="color:#000000; font-weight:bold;">${nuevoValor}</span>`;
+            } else {
+                document.getElementById("wrapper-nacimiento").innerHTML = `<span style="color:#000000; font-weight:bold;">${nuevoValor}</span>`;
+            }
+        }
+    }
+
+    function abrirModalDireccion() {
+        document.getElementById("modal-direccion").style.display = "flex";
+    }
+
+    function cerrarModalDireccion() {
+        document.getElementById("modal-direccion").style.display = "none";
+        document.getElementById("dir-etiqueta").value = "";
+        document.getElementById("dir-texto").value = "";
+    }
+
+    function guardarDireccion() {
+        const etiqueta = document.getElementById("dir-etiqueta").value.trim();
+        const texto = document.getElementById("dir-texto").value.trim();
+
+        if (!etiqueta || !texto) {
+            alert("Por favor rellena todos los campos.");
+            return;
+        }
+
+        let direcciones = JSON.parse(localStorage.getItem("direcciones_ecosmart")) || [];
+        direcciones.push({ etiqueta, texto });
+        localStorage.setItem("direcciones_ecosmart", JSON.stringify(direcciones));
+
+        cerrarModalDireccion();
+        cargarDirecciones();
+    }
+
+    function cargarDirecciones() {
+        const lista = document.getElementById("lista-direcciones");
+        if(!lista) return;
+
+        lista.innerHTML = `
+            <div style="background-color: #ffffff; border: 1px solid #e1e8f5; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                <div>
+                    <strong style="color: #005c92; font-size: 14px;">Casa Principal (Predeterminada)</strong>
+                    <p style="margin: 4px 0 0 0; color: #4a5568; font-size: 14px;">Calle 26 #68b, Bogotá, Colombia</p>
+                </div>
+                <span style="color: #718096; font-size: 12px; font-weight: bold;">✔ Activa</span>
+            </div>
+        `;
+
+        const direcciones = JSON.parse(localStorage.getItem("direcciones_ecosmart")) || [];
+        direcciones.forEach(d => {
+            const item = document.createElement("div");
+            item.style = "background-color: #ffffff; border: 1px solid #e1e8f5; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02);";
+            item.innerHTML = `
+                <div>
+                    <strong style="color: #000000; font-size: 14px;">${d.etiqueta}</strong>
+                    <p style="margin: 4px 0 0 0; color: #4a5568; font-size: 14px;">${d.texto}</p>
+                </div>
+            `;
+            lista.appendChild(item);
+        });
+    }
+    </script>
+</body>
+
+</html>

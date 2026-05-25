@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart - Cocina</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body style="background-color: #f9f9f9; margin: 0; font-family: sans-serif;">
+
+<header style="background-color: #000000; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+    <div class="logo" style="display: flex; align-items: center; gap: 15px;">
+        <img src="../img/logo.png" alt="Logo EcoSmart" style="width: 110px; height: auto;">
+        <div class="texto-logo">
+            <h1 style="font-size: 38px; color: #ffffff; margin: 0; font-weight: bold;">EcoSmart</h1>
+        </div>
+    </div>
+
+    <div class="buscador" style="position: relative; display: flex; width: 45%;">
+        <input type="text" placeholder="Buscar productos en cocina..." style="width: 100%; padding: 12px 15px; border: none; background-color: #ffffff; color: #333; border-radius: 4px 0 0 4px; outline: none; font-size: 14px;">
+        <button type="button" style="padding: 12px 20px; background-color: #00a2ff; border: none; color: white; cursor: pointer; border-radius: 0 4px 4px 0; font-size: 16px;">🔍</button>
+        <div id="sugerencias-flotantes" class="dropdown-sugerencias"></div>
+    </div>
+
+    <div class="acciones-header" style="display: flex; align-items: center; gap: 25px;">
+        <div class="menu-cuenta" style="position: relative;">
+            <button type="button" class="btn-cuenta" style="background: none; border: none; color: #ffffff; cursor: pointer; font-size: 15px; display: flex; align-items: center; gap: 6px; font-weight: 500;">👤 Mi cuenta</button>
+            <div class="dropdown-cuenta" id="mi-cuenta-dropdown">
+                <a href="login.html" class="enlace-login">Iniciar sesión</a>
+                <a href="registro.html" class="enlace-registro">Crear cuenta</a>
+                <a href="perfil.html" class="enlace-perfil" style="display: none;">Ver perfil</a>
+                <a href="#" class="enlace-logout" style="display: none;">Cerrar sesión</a>
+            </div>
+        </div>
+
+        <a href="carrito.html" style="color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 8px; position: relative;">
+            🛒 Mi carrito
+            <span id="contador-carrito-circulo" style="background-color: #00a2ff; color: white; font-size: 11px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">0</span>
+        </a>
+    </div>
+</header>
+
+<nav style="background-color: #000000; padding: 16px 40px; display: flex; gap: 45px; border-top: 1px solid #111;">
+    <a href="index.html" style="color: white; text-decoration: none; font-size: 20px; font-weight: bold;">⌂ Inicio</a>
+    <a href="cocina.html" style="color: #00a2ff; text-decoration: none; font-size: 20px; font-weight: bold;">Cocina</a>
+    <a href="limpieza.html" style="color: white; text-decoration: none; font-size: 20px; font-weight: bold;">Limpieza</a>
+    <a href="climatizacion.html" style="color: white; text-decoration: none; font-size: 20px; font-weight: bold;">Climatización</a>
+    <a href="cuidado_personal.html" style="color: white; text-decoration: none; font-size: 20px; font-weight: bold;">Cuidado personal</a>
+</nav>
+
+<div id="modal-logout" class="fondo-modal-logout">
+    <div class="contenido-modal-logout">
+        <div id="pantalla-pregunta">
+            <div style="font-size: 40px; margin-bottom: 15px;">👋</div>
+            <h3 style="margin: 0 0 10px 0; font-size: 20px; color: #111;">¿Seguro que quieres cerrar sesión?</h3>
+            <p style="margin: 0 0 25px 0; color: #666; font-size: 14px;">Tendrás que volver a ingresar tus datos la próxima vez.</p>
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button type="button" id="btn-confirmar-logout-si" class="btn-modal-si">Sí, salir</button>
+                <button type="button" id="btn-confirmar-logout-no" class="btn-modal-no">Cancelar</button>
+            </div>
+        </div>
+        <div id="pantalla-procesando" style="display: none;">
+            <div class="spinner-carga"></div>
+            <h3 style="margin: 15px 0 0 0; font-size: 18px; color: #111;">Cerrando sesión...</h3>
+            <p style="margin: 5px 0 0 0; color: #888; font-size: 13px;">Guardando tus preferencias</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .enlace-menu:hover, .enlace-inicio-principal:hover {
+        color: #00a2ff !important;
+    }
+    
+    /* Estilos del menú desplegable */
+    .dropdown-cuenta {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: #ffffff;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        border-radius: 4px;
+        padding: 10px 0;
+        z-index: 1000;
+        margin-top: 10px;
+    }
+
+    .dropdown-cuenta a {
+        color: #333333;
+        padding: 10px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .dropdown-cuenta a:hover {
+        background-color: #f1f1f1;
+        color: #00a2ff;
+    }
+
+    .dropdown-cuenta.mostrar {
+        display: block !important;
+    }
+    
+    .contenedor-productos-horizontal {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 30px;
+        padding: 40px 20px;
+        justify-content: center;
+    }
+    
+    .card-horizontal {
+        display: flex;
+        flex-direction: row; 
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        align-items: center;
+        box-sizing: border-box;
+        border: 1px solid #eaeaea;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    
+    .card-img-container {
+        width: 110px;
+        min-width: 110px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .card-horizontal img {
+        max-width: 100%;
+        max-height: 130px;
+        object-fit: contain;
+    }
+    
+    .card-info {
+        padding-left: 20px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    
+    .card-info h3 {
+        font-size: 16px;
+        color: #111111;
+        margin: 0 0 6px 0;
+        font-weight: bold;
+    }
+    
+    .card-info .descripcion {
+        font-size: 12px;
+        color: #666666;
+        margin: 0 0 12px 0;
+        line-height: 1.4;
+    }
+    
+    .card-info .precio {
+        font-size: 18px;
+        color: #2e7d32; 
+        font-weight: bold;
+        margin: 0 0 15px 0;
+    }
+
+    .botones-card-horizontal {
+        display: flex;
+        flex-direction: column; 
+        gap: 8px;
+        width: 100%;
+    }
+    
+    /* ESTILO MODERNO EN AZUL ECOSMART */
+    .btn-agregar {
+        background-color: #00a2ff; 
+        color: #ffffff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 16px; 
+        cursor: pointer;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+        font-size: 17px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-agregar:hover { 
+        background-color: #008be0; 
+    }
+    
+    .btn-agregar:active {
+        transform: scale(0.98);
+    }
+
+    /* Notificación flotante de carrito */
+    .notificacion-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #ffffff;
+        color: #333333;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        border-left: 5px solid #00a2ff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 9999;
+        font-weight: bold;
+        font-size: 14px;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .notificacion-toast.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .icono-chulito {
+        width: 20px;
+        height: 20px;
+        background-color: #00a2ff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+    }
+
+    /* ESTILOS DEL MODAL DE CERRAR SESIÓN */
+    .fondo-modal-logout {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(3px);
+    }
+
+    .contenido-modal-logout {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 365px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        animation: entradaSuaveModal 0.3s ease-out;
+    }
+
+    @keyframes entradaSuaveModal {
+        from { transform: scale(0.85); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .btn-modal-si {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+    .btn-modal-si:hover { background-color: #e03333; }
+
+    .btn-modal-no {
+        background-color: #eeeeee;
+        color: #333333;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+    .btn-modal-no:hover { background-color: #dddddd; }
+
+    .spinner-carga {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #ff4d4d;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        animation: girarSpinner 0.8s linear infinite;
+        margin: 0 auto;
+    }
+    @keyframes girarSpinner {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<section style="
+background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('../img/banner-cocina.jpg') center/cover no-repeat;
+padding: 90px 50px;
+border-radius: 12px;
+margin: 5px 5px;
+position: relative;
+overflow: hidden;
+">
+    <div style="max-width: 600px; color: white;">
+        <h2 style="font-size: 60px; margin: 0 0 15px 0; font-weight: bold;">Categoría Cocina</h2>
+        <div style="width: 90px; height: 4px; background-color: #00a2ff; margin-bottom: 20px; border-radius: 5px;"></div>
+        <p style="font-size: 22px; line-height: 1.5; color: #e2e8f0; margin: 0;">
+            Equipa tu espacio con tecnología eficiente de alta calidad.
+        </p>
+    </div>
+</section>
+
+<div class="contenedor-productos-horizontal">
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/nevera.jpg" alt="Nevera Premium"></div>
+        <div class="card-info">
+            <h3>Nevera Mabe</h3>
+            <p class="descripcion">Nevera No Frost de gran capacidad y sistema de ahorro energético.</p>
+            <p class="precio">$2.500.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/licuadora.jpg" alt="Licuadora Oster"></div>
+        <div class="card-info">
+            <h3>Licuadora Oster Reversible</h3>
+            <p class="descripcion">Motor reversible de alta potencia con vaso de vidrio refractario.</p>
+            <p class="precio">$180.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/microondas.jpg" alt="Microondas Recc"></div>
+        <div class="card-info">
+            <h3>Microondas Recco</h3>
+            <p class="descripcion">Diseño digital con menús preprogramados para descongelar fácil.</p>
+            <p class="precio">$450.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/sanduchera.jpg" alt="Sanduchera"></div>
+        <div class="card-info">
+            <h3>Sanduchera Eléctrica</h3>
+            <p class="descripcion">Placas de corte profundo con revestimiento antiadherente rápido.</p>
+            <p class="precio">$65.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/cafetera.jpg" alt="Cafetera Kalley"></div>
+        <div class="card-info">
+            <h3>Cafetera de Goteo Kalley</h3>
+            <p class="descripcion">Filtro permanente lavable con jarra de vidrio de alta resistencia.</p>
+            <p class="precio">$120.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/espresso.jpg" alt="Cafetera Espresso Oster"></div>
+        <div class="card-info">
+            <h3>Cafetera Espresso Oster</h3>
+            <p class="descripcion">Bomba de 15 bares para un espresso cremoso de nivel profesional.</p>
+            <p class="precio">$290.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/arrocera.jpg" alt="Arrocera Imusa"></div>
+        <div class="card-info">
+            <h3>Olla Arrocera Imusa</h3>
+            <p class="descripcion">Capacidad ideal con recipiente removible antiadherente y vaporera.</p>
+            <p class="precio">$150.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/batidora.jpg" alt="Batidora Kalley"></div>
+        <div class="card-info">
+            <h3>Batidora de Pedestal Kalley</h3>
+            <p class="descripcion">Múltiples velocidades con tazón de acero inoxidable resistente.</p>
+            <p class="precio">$195.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/campana.jpg" alt="Campana Challenger"></div>
+        <div class="card-info">
+            <h3>Campana Extractora Challenger</h3>
+            <p class="descripcion">Filtro de carbón activado con alta capacidad de absorción de olores.</p>
+            <p class="precio">$380.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/cubierta.jpg" alt="Cubierta Challenger"></div>
+        <div class="card-info">
+            <h3>Cubierta de Vidrio Challenger</h3>
+            <p class="descripcion">Estufa de empotrar a gas con quemadores de alta eficiencia.</p>
+            <p class="precio">$520.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/estufapiso.jpg" alt="Estufa Haceb"></div>
+        <div class="card-info">
+            <h3>Estufa de Piso Haceb</h3>
+            <p class="descripcion">Estufa con horno integrado y encendido electrónico automático.</p>
+            <p class="precio">$1.100.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/extractor.jpg" alt="Extractor Oster"></div>
+        <div class="card-info">
+            <h3>Extractor de Jugos Oster</h3>
+            <p class="descripcion">Filtro de acero para separar pulpa con boca de alimentación ancha.</p>
+            <p class="precio">$240.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/freidora.jpg" alt="Freidora Airfryer"></div>
+        <div class="card-info">
+            <h3>Freidora de Aire Digital</h3>
+            <p class="descripcion">Cocina crujiente sin usar aceite mediante aire rápido circular.</p>
+            <p class="precio">$320.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/hervidor.jpg" alt="Hervidor Black+Decker"></div>
+        <div class="card-info">
+            <h3>Hervidor Eléctrico Black+Decker</h3>
+            <p class="descripcion">Apagado automático de seguridad con jarra inalámbrica práctica.</p>
+            <p class="precio">$115.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/hornotostador.jpg" alt="Horno Black+Decker"></div>
+        <div class="card-info">
+            <h3>Horno Tostador Black+Decker</h3>
+            <p class="descripcion">Horno compacto para gratinar y tostar con temporizador integrado.</p>
+            <p class="precio">$280.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/lavavajillas.jpg" alt="Lavavajillas Whirlpool"></div>
+        <div class="card-info">
+            <h3>Lavavajillas Whirlpool</h3>
+            <p class="descripcion">Múltiples ciclos de lavado inteligente a alta temperatura.</p>
+            <p class="precio">$1.950.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/ollapresion.jpg" alt="Olla Presión Oster"></div>
+        <div class="card-info">
+            <h3>Olla a Presión Digital Oster</h3>
+            <p class="descripcion">Múltiples funciones automáticas rápidas y seguras en un toque.</p>
+            <p class="precio">$430.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/Plancha de Asar.jpg" alt="Plancha Imusa"></div>
+        <div class="card-info">
+            <h3>Plancha de Asar Imusa</h3>
+            <p class="descripcion">Superficie antiadherente plana ideal para carnes y asados familiares.</p>
+            <p class="precio">$165.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/procesador.jpg" alt="Procesador Ninja"></div>
+        <div class="card-info">
+            <h3>Procesador de Alimentos Ninja</h3>
+            <p class="descripcion">Cuchillas de alta precisión para picar y hacer puré en segundos.</p>
+            <p class="precio">$340.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container"><img src="../img/waflera.jpg" alt="Waflera Kalley"></div>
+        <div class="card-info">
+            <h3>Waflera Eléctrica Kalley</h3>
+            <p class="descripcion">Placas circulares antiadherentes con luces indicadoras de estado.</p>
+            <p class="precio">$95.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    <span>Agregar</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sesionActiva = JSON.parse(localStorage.getItem("sesion_activa_ecosmart"));
+        
+        const CLAVE_CARRITO = sesionActiva && sesionActiva.nombre 
+            ? `ecosmart_carrito_${sesionActiva.nombre}` 
+            : 'ecosmart_carrito_invitado';
+
+        let carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
+        
+        const circuloContador = document.getElementById('contador-carrito-circulo');
+        const btnCuenta = document.querySelector(".btn-cuenta");
+        const dropdownMenu = document.getElementById('mi-cuenta-dropdown');
+        
+        const laceLogin = document.querySelector(".enlace-login");
+        const laceRegistro = document.querySelector(".enlace-registro");
+        const lacePerfil = document.querySelector(".enlace-perfil");
+        const laceLogout = document.querySelector(".enlace-logout");
+
+        const modalLogout = document.getElementById("modal-logout");
+        const btnLogoutSi = document.getElementById("btn-confirmar-logout-si");
+        const btnLogoutNo = document.getElementById("btn-confirmar-logout-no");
+        const pantallaPregunta = document.getElementById("pantalla-pregunta");
+        const pantallaProcesando = document.getElementById("pantalla-procesando");
+
+        if (sesionActiva && sesionActiva.nombre) {
+            if (btnCuenta) btnCuenta.innerHTML = `👤 ${sesionActiva.nombre}`;
+            if (laceLogin) laceLogin.style.display = "none";
+            if (laceRegistro) laceRegistro.style.display = "none";
+            if (lacePerfil) lacePerfil.style.display = "block";
+            if (laceLogout) laceLogout.style.display = "block";
+        } else {
+            if (laceLogin) laceLogin.style.display = "block";
+            if (laceRegistro) laceRegistro.style.display = "block";
+            if (lacePerfil) lacePerfil.style.display = "none";
+            if (laceLogout) laceLogout.style.display = "none";
+        }
+
+        if (btnCuenta && dropdownMenu) {
+            btnCuenta.addEventListener("click", (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle("mostrar");
+            });
+
+            document.addEventListener("click", () => {
+                dropdownMenu.classList.remove("mostrar");
+            });
+        }
+
+        if (laceLogout) {
+            laceLogout.addEventListener("click", (e) => {
+                e.preventDefault();
+                dropdownMenu.classList.remove("mostrar");
+                pantallaPregunta.style.display = "block";
+                pantallaProcesando.style.display = "none";
+                modalLogout.style.display = "flex"; 
+            });
+        }
+
+        if (btnLogoutNo) {
+            btnLogoutNo.addEventListener("click", () => {
+                modalLogout.style.display = "none";
+            });
+        }
+
+        if (btnLogoutSi) {
+            btnLogoutSi.addEventListener("click", () => {
+                pantallaPregunta.style.display = "none";
+                pantallaProcesando.style.display = "block";
+                localStorage.removeItem("sesion_activa_ecosmart");
+                localStorage.removeItem('ecosmart_carrito_invitado');
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 1500);
+            });
+        }
+
+        function actualizarCirculoHeader() {
+            if (circuloContador) {
+                const totalArticulos = carrito.reduce((acumulado, item) => acumulado + item.cantidad, 0);
+                circuloContador.innerText = totalArticulos;
+            }
+        }
+        
+        actualizarCirculoHeader();
+
+        function obtenerDatosProducto(tarjeta) {
+            const nombre = tarjeta.querySelector('.card-info h3').innerText;
+            const precioTexto = tarjeta.querySelector('.card-info .precio').innerText;
+            const precio = parseFloat(precioTexto.replace(/[^0-9]/g, ''));
+            const imagen = tarjeta.querySelector('.card-img-container img').getAttribute('src');
+            return { nombre, precio, imagen };
+        }
+
+        function agregarAlCarrito(producto) {
+            carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
+            const existente = carrito.find(item => item.nombre === producto.nombre);
+            
+            if (existente) {
+                existente.cantidad += 1;
+            } else {
+                carrito.push({ 
+                    nombre: producto.nombre, 
+                    precio: producto.precio, 
+                    imagen: producto.imagen, 
+                    cantidad: 1 
+                });
+            }
+            
+            localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+            actualizarCirculoHeader();
+        }
+
+        function mostrarNotificacion(nombreProducto) {
+            let toast = document.getElementById('toast-notificacion');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast-notificacion';
+                toast.className = 'notificacion-toast';
+                document.body.appendChild(toast);
+            }
+
+            toast.innerHTML = `
+                <div class="icono-chulito">✓</div>
+                <span>"${nombreProducto}" agregado al carrito</span>
+            `;
+
+            setTimeout(() => {
+                toast.classList.add('visible');
+            }, 100);
+
+            setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 2500);
+        }
+
+        document.body.addEventListener('click', (e) => {
+            const boton = e.target.closest('.btn-agregar');
+            if (boton) {
+                const tarjeta = boton.closest('.card-horizontal');
+                const producto = obtenerDatosProducto(tarjeta);
+                agregarAlCarrito(producto);
+                mostrarNotificacion(producto.nombre);
+            }
+        });
+    });
+</script>
+</body>
+</html>

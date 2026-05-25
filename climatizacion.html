@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart - Climatización</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<header style="background-color: #000000; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+    <div class="logo" style="display: flex; align-items: center; gap: 15px;">
+        <img src="../img/logo.png" alt="Logo EcoSmart" style="width: 110px; height: auto;">
+        <div class="texto-logo">
+            <h1 style="font-size: 38px; color: #ffffff; margin: 0; font-weight: bold;">EcoSmart</h1>
+        </div>
+    </div>
+
+    <div class="buscador" style="position: relative; display: flex; width: 45%;">
+        <input type="text" placeholder="Buscar productos en climatización..." style="width: 100%; padding: 12px 15px; border: none; background-color: #ffffff; color: #333; border-radius: 4px 0 0 4px; outline: none; font-size: 14px;">
+        <button type="button" style="padding: 12px 20px; background-color: #00a2ff; border: none; color: white; cursor: pointer; border-radius: 0 4px 4px 0; font-size: 16px;">🔍</button>
+        <div id="sugerencias-flotantes" class="dropdown-sugerencias"></div>
+    </div>
+
+    <div class="acciones-header" style="display: flex; align-items: center; gap: 25px;">
+        <div class="menu-cuenta" style="position: relative;">
+            <button type="button" class="btn-cuenta" style="background: none; border: none; color: #ffffff; cursor: pointer; font-size: 15px; display: flex; align-items: center; gap: 6px; font-weight: 500;">👤 Mi cuenta</button>
+            <div class="dropdown-cuenta" style="display: none; position: absolute; top: 100%; right: 0; background-color: white; border: 1px solid #ccc; padding: 10px; z-index: 1000; min-width: 150px; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <a href="login.html" class="enlace-login" style="display: block; color: #333; text-decoration: none; padding: 5px 0;">Iniciar sesión</a>
+                <a href="registro.html" class="enlace-registro" style="display: block; color: #333; text-decoration: none; padding: 5px 0;">Crear cuenta</a>
+                <a href="perfil.html" class="enlace-perfil" style="display: none; color: #333; text-decoration: none; padding: 5px 0;">Ver perfil</a>
+                <a href="#" class="enlace-logout" style="display: none; color: #333; text-decoration: none; padding: 5px 0;">Cerrar sesión</a>
+            </div>
+        </div>
+
+        <a href="carrito.html" id="enlace-carrito-header" style="color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 8px; position: relative;">
+            🛒 Mi carrito
+            <span id="contador-carrito-circulo" style="background-color: #00a2ff; color: white; font-size: 11px; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">0</span>
+        </a>
+    </div>
+</header>
+
+<nav class="menu" style="background-color: #000000; padding: 14px 40px; display: flex; align-items: center; border-top: 1px solid #111111;">
+    <div class="nav-izquierda" style="display: flex; align-items: center; border-right: 1px solid #333333; padding-right: 25px;">
+        <a href="index.html" style="color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 6px;">⌂ Inicio</a>
+    </div>
+    <div class="nav-centro" style="display: flex; align-items: center; gap: 40px; padding-left: 25px;">
+        <a href="cocina.html" style="color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold;">Cocina</a>
+        <a href="limpieza.html" style="color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold;">Limpieza</a>
+        <a href="climatizacion.html" style="color: #00a2ff; text-decoration: none; font-size: 20px; font-weight: bold;">Climatización</a>
+        <a href="cuidado_personal.html" style="color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold;">Cuidado personal</a>
+    </div>
+</nav>
+
+<style>
+    /* CUADRÍCULA DE 3 COLUMNAS */
+    .contenedor-productos-horizontal {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        padding: 40px 30px;
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .card-horizontal {
+        display: flex;
+        flex-direction: row; 
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 18px;
+        box-sizing: border-box;
+        align-items: center;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    
+    .card-img-container {
+        width: 120px;
+        min-width: 120px;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+    }
+    
+    .card-img-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .card-info {
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        text-align: left;
+    }
+    
+    .card-info h3 {
+        font-size: 16px;
+        color: #000000;
+        margin: 0 0 6px 0;
+        font-weight: 700;
+    }
+    
+    .card-info .descripcion {
+        font-size: 12px;
+        color: #718096;
+        margin: 0 0 8px 0;
+        line-height: 1.4;
+    }
+    
+    .card-info .precio {
+        font-size: 16px;
+        color: #2e7d32; 
+        font-weight: 700;
+        margin: 0 0 12px 0;
+    }
+
+    .btn-agregar {
+        background-color: #00a2ff; 
+        color: #ffffff;
+        border: none;
+        padding: 10px 0;
+        border-radius: 8px; 
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 15px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-sizing: border-box;
+        transition: background-color 0.15s ease;
+    }
+
+    .btn-agregar:hover {
+        background-color: #008be3;
+    }
+
+    .btn-agregar svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: #ffffff;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .dropdown-cuenta {
+        background-color: #ffffff !important;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    .dropdown-cuenta a {
+        display: block;
+        color: #333333 !important; 
+        text-decoration: none;
+        padding: 8px 12px;
+        font-family: sans-serif;
+        font-size: 14px;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+    }
+
+    .dropdown-cuenta a:hover {
+        background-color: #f1f5f9 !important; 
+        color: #00a2ff !important;            
+    }
+
+    .dropdown-cuenta.mostrar {
+        display: block !important;
+    }
+
+    /* Notificación flotante de carrito */
+    .notificacion-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #ffffff;
+        color: #333333;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        border-left: 5px solid #00a2ff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 9999;
+        font-weight: bold;
+        font-size: 14px;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .notificacion-toast.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .icono-chulito {
+        width: 20px;
+        height: 20px;
+        background-color: #00a2ff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+    }
+
+    /* PANEL LATERAL DEL CARRITO */
+    .carrito-panel-lateral {
+        position: fixed;
+        top: 0;
+        right: -450px;
+        width: 400px;
+        max-width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        transition: right 0.3s ease-in-out;
+    }
+    .carrito-panel-lateral.abierto {
+        right: 0;
+    }
+    .carrito-header {
+        padding: 20px;
+        background-color: #000000;
+        color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .btn-cerrar-carrito {
+        background: none;
+        border: none;
+        color: #ffffff;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .carrito-productos-lista {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .producto-carrito-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border-bottom: 1px solid #eaeaea;
+        padding-bottom: 15px;
+    }
+    .producto-carrito-item img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+    }
+    .carrito-total-seccion {
+        padding: 20px;
+        border-top: 1px solid #eaeaea;
+        background-color: #f9f9f9;
+    }
+    .btn-ir-pagar {
+        display: block;
+        width: 100%;
+        background-color: #f2811d;
+        color: #ffffff;
+        text-align: center;
+        padding: 12px 0;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    /* =========================================================
+       AGREGADO: ESTILOS PARA EL MODAL DE CERRAR SESIÓN
+       ========================================================= */
+    .fondo-modal-logout {
+        display: none; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+        z-index: 100000;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .contenido-modal-logout {
+        background-color: #ffffff;
+        padding: 35px 30px;
+        border-radius: 16px;
+        width: 400px;
+        max-width: 90%;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        animation: entradaModal 0.3s ease-out;
+    }
+
+    .btn-modal-si {
+        background-color: #ff4d4d;
+        color: #ffffff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        transition: background-color 0.2s;
+    }
+    .btn-modal-si:hover {
+        background-color: #e03e3e;
+    }
+
+    .btn-modal-no {
+        background-color: #eaeaea;
+        color: #333333;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        transition: background-color 0.2s;
+    }
+    .btn-modal-no:hover {
+        background-color: #dddddd;
+    }
+
+    .spinner-carga {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border-left-color: #00a2ff;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 15px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes entradaModal {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+</style>
+<section style="background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('../img/hero_climatizacion.jpg') center/cover no-repeat; margin: 20px 30px; padding: 70px 40px; border-radius: 12px; text-align: center; color: white;">
+    <h2 style="font-size: 45px; margin-bottom: 15px;">Categoría Climatización</h2>
+    <div style="width: 70px; height: 4px; background-color: #00a2ff; margin: auto auto 18px auto;"></div>
+    <p style="font-size: 18px; max-width: 750px; margin: auto; line-height: 1.6;">
+        Mantén tus espacios frescos, cálidos y confortables con tecnología inteligente para el hogar.
+    </p>
+</section>
+
+<div class="contenedor-productos-horizontal">
+    
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/aire_portatil.jpg" alt="Challenger AP-09 Aire Portátil">
+        </div>
+        <div class="card-info">
+            <h3>Challenger AP-09 Aire Portátil</h3>
+            <p class="descripcion">Aire acondicionado portátil compacto con enfriamiento rápido y bajo consumo energético.</p>
+            <p class="precio">$1.450.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/aire_split.jpg" alt="LG Dual Inverter Split 12000 BTU">
+        </div>
+        <div class="card-info">
+            <h3>LG Dual Inverter Split 12000 BTU</h3>
+            <p class="descripcion">Sistema split silencioso con tecnología inverter y ahorro energético.</p>
+            <p class="precio">$2.800.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/calefactor_aceite.jpg" alt="DeLonghi Dragon4">
+        </div>
+        <div class="card-info">
+            <h3>DeLonghi Dragon4</h3>
+            <p class="descripcion">Calefactor de aceite con distribución uniforme del calor y sistema seguro.</p>
+            <p class="precio">$620.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/calefactor_pared.jpg" alt="Home Elements Calefactor">
+        </div>
+        <div class="card-info">
+            <h3>Home Elements Calefactor</h3>
+            <p class="descripcion">Calefactor compacto ideal para habitaciones y oficinas pequeñas.</p>
+            <p class="precio">$210.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/calefactor_torre.jpg" alt="Taurus Babel RC">
+        </div>
+        <div class="card-info">
+            <h3>Taurus Babel RC</h3>
+            <p class="descripcion">Calefactor tipo torre con control remoto y temperatura ajustable.</p>
+            <p class="precio">$390.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/cortina_aire.jpg" alt="VentDepot Cortina Industrial">
+        </div>
+        <div class="card-info">
+            <h3>VentDepot Cortina Industrial</h3>
+            <p class="descripcion">Cortina de aire potente para entradas comerciales y espacios amplios.</p>
+            <p class="precio">$1.950.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/deshumidificador.jpg" alt="Sevon Smart Dehumidifier">
+        </div>
+        <div class="card-info">
+            <h3>Sevon Smart Dehumidifier</h3>
+            <p class="descripcion">Reduce humedad y mejora la calidad del aire en interiores.</p>
+            <p class="precio">$480.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/enfriador_aire.jpg" alt="Symphony Diet 12T">
+        </div>
+        <div class="card-info">
+            <h3>Symphony Diet 12T</h3>
+            <p class="descripcion">Enfriador evaporativo portátil con flujo de aire de alta potencia.</p>
+            <p class="precio">$730.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/extractor_pared.jpg" alt="Ecolite Extractor de Aire">
+        </div>
+        <div class="card-info">
+            <h3>Ecolite Extractor de Aire</h3>
+            <p class="descripcion">Extractor silencioso para baños, cocinas y espacios cerrados.</p>
+            <p class="precio">$180.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/humidificador.jpg" alt="Levoit Classic 300S">
+        </div>
+        <div class="card-info">
+            <h3>Levoit Classic 300S</h3>
+            <p class="descripcion">Humidificador ultrasónico inteligente con control automático.</p>
+            <p class="precio">$350.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/humidificador_vapor.jpg" alt="Vicks Vaporize VH750">
+        </div>
+        <div class="card-info">
+            <h3>Vicks Vaporize VH750</h3>
+            <p class="descripcion">Humidificador de vapor caliente ideal para climas secos.</p>
+            <p class="precio">$290.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/mini_ventilador.jpg" alt="VTA Mini Fan USB">
+        </div>
+        <div class="card-info">
+            <h3>VTA Mini Fan USB</h3>
+            <p class="descripcion">Mini ventilador portátil ideal para escritorio y espacios pequeños.</p>
+            <p class="precio">$55.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/purificador_aire.jpg" alt="Kalley Pure Air Smart">
+        </div>
+        <div class="card-info">
+            <h3>Kalley Pure Air Smart</h3>
+            <p class="descripcion">Purificador de aire con filtro HEPA para eliminar partículas y polvo.</p>
+            <p class="precio">$680.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/ventilador_aspas.jpg" alt="Samurai Turbo Silence">
+        </div>
+        <div class="card-info">
+            <h3>Samurai Turbo Silence</h3>
+            <p class="descripcion">Ventilador potente de aspas con bajo nivel de ruido.</p>
+            <p class="precio">$210.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/ventilador_industrial.jpg" alt="Industrial Fan Pro Max">
+        </div>
+        <div class="card-info">
+            <h3>Industrial Fan Pro Max</h3>
+            <p class="descripcion">Ventilador industrial de alta potencia para talleres y bodegas.</p>
+            <p class="precio">$980.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/ventilador_mesa.jpg" alt="Imusa Fresh Desk">
+        </div>
+        <div class="card-info">
+            <h3>Imusa Fresh Desk</h3>
+            <p class="descripcion">Ventilador de mesa compacto con velocidad ajustable.</p>
+            <p class="precio">$120.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/ventilador_pared.jpg" alt="KDK Wall Fan">
+        </div>
+        <div class="card-info">
+            <h3>KDK Wall Fan</h3>
+            <p class="descripcion">Ventilador de pared oscilante con gran cobertura de aire.</p>
+            <p class="precio">$260.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/ventilador_pedestal.jpg" alt="Samurai Silence Max">
+        </div>
+        <div class="card-info">
+            <h3>Samurai Silence Max</h3>
+            <p class="descripcion">Ventilador pedestal silencioso con altura regulable.</p>
+            <p class="precio">$340.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/ventilador_techo.jpg" alt="Hunter Ceiling Fan Deluxe">
+        </div>
+        <div class="card-info">
+            <h3>Hunter Ceiling Fan Deluxe</h3>
+            <p class="descripcion">Ventilador de techo elegante con iluminación integrada.</p>
+            <p class="precio">$850.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-horizontal">
+        <div class="card-img-container">
+            <img src="../img/ventilador_torre.jpg" alt="Oster Tower Breeze">
+        </div>
+        <div class="card-info">
+            <h3>Oster Tower Breeze</h3>
+            <p class="descripcion">Ventilador tipo torre moderno con control remoto y temporizador.</p>
+            <p class="precio">$430.000</p>
+            <div class="botones-card-horizontal">
+                <button type="button" class="btn-agregar">
+                    Agregar 
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sesionActiva = JSON.parse(localStorage.getItem("sesion_activa_ecosmart"));
+        
+        const CLAVE_CARRITO = sesionActiva && sesionActiva.nombre 
+            ? `ecosmart_carrito_${sesionActiva.nombre}` 
+            : 'ecosmart_carrito_invitado';
+
+        let carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
+        
+        const circuloContador = document.getElementById('contador-carrito-circulo');
+        const btnCuenta = document.querySelector(".btn-cuenta");
+        const dropdownMenu = document.querySelector('.dropdown-cuenta');
+        
+        const laceLogin = document.querySelector(".enlace-login");
+        const laceRegistro = document.querySelector(".enlace-registro");
+        const lacePerfil = document.querySelector(".enlace-perfil");
+        const laceLogout = document.querySelector(".enlace-logout");
+
+        const modalLogout = document.getElementById("modal-logout");
+        const btnLogoutSi = document.getElementById("btn-confirmar-logout-si");
+        const btnLogoutNo = document.getElementById("btn-confirmar-logout-no");
+        const pantallaPregunta = document.getElementById("pantalla-pregunta");
+        const pantallaProcesando = document.getElementById("pantalla-procesando");
+
+        if (sesionActiva && sesionActiva.nombre) {
+            if (btnCuenta) btnCuenta.innerHTML = `👤 ${sesionActiva.nombre}`;
+            if (laceLogin) laceLogin.style.display = "none";
+            if (laceRegistro) laceRegistro.style.display = "none"; // Quita "Crear cuenta" si ya está logueado
+            if (lacePerfil) lacePerfil.style.display = "block";
+            if (laceLogout) laceLogout.style.display = "block";
+        } else {
+            if (laceLogin) laceLogin.style.display = "block";
+            if (laceRegistro) laceRegistro.style.display = "block";
+            if (lacePerfil) lacePerfil.style.display = "none";
+            if (laceLogout) laceLogout.style.display = "none";
+        }
+
+        if (btnCuenta && dropdownMenu) {
+            btnCuenta.addEventListener("click", (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle("mostrar");
+            });
+
+            document.addEventListener("click", () => {
+                dropdownMenu.classList.remove("mostrar");
+            });
+        }
+
+        if (laceLogout) {
+            laceLogout.addEventListener("click", (e) => {
+                e.preventDefault();
+                dropdownMenu.classList.remove("mostrar");
+                pantallaPregunta.style.display = "block";
+                pantallaProcesando.style.display = "none";
+                modalLogout.style.display = "flex"; 
+            });
+        }
+
+        if (btnLogoutNo) {
+            btnLogoutNo.addEventListener("click", () => {
+                modalLogout.style.display = "none";
+            });
+        }
+
+        if (btnLogoutSi) {
+            btnLogoutSi.addEventListener("click", () => {
+                pantallaPregunta.style.display = "none";
+                pantallaProcesando.style.display = "block";
+                localStorage.removeItem("sesion_activa_ecosmart");
+                localStorage.removeItem('ecosmart_carrito_invitado');
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 1500);
+            });
+        }
+
+        function actualizarCirculoHeader() {
+            if (circuloContador) {
+                const totalArticulos = carrito.reduce((acumulado, item) => acumulado + item.cantidad, 0);
+                circuloContador.innerText = totalArticulos;
+            }
+        }
+        
+        actualizarCirculoHeader();
+
+        function obtenerDatosProducto(tarjeta) {
+            const nombre = tarjeta.querySelector('.card-info h3').innerText;
+            const precioTexto = tarjeta.querySelector('.card-info .precio').innerText;
+            const precio = parseFloat(precioTexto.replace(/[^0-9]/g, ''));
+            const imagen = tarjeta.querySelector('.card-img-container img').getAttribute('src');
+            return { nombre, precio, imagen };
+        }
+
+        function agregarAlCarrito(producto) {
+            carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
+            const existente = carrito.find(item => item.nombre === producto.nombre);
+            
+            if (existente) {
+                existente.cantidad += 1;
+            } else {
+                carrito.push({ 
+                    nombre: producto.nombre, 
+                    precio: producto.precio, 
+                    imagen: producto.imagen, 
+                    cantidad: 1 
+                });
+            }
+            
+            localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+            actualizarCirculoHeader();
+        }
+
+        function mostrarNotificacion(nombreProducto) {
+            let toast = document.getElementById('toast-notificacion');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast-notificacion';
+                toast.className = 'notificacion-toast';
+                document.body.appendChild(toast);
+            }
+            
+            toast.innerHTML = `
+                <div class="icono-chulito">✓</div>
+                <span>${nombreProducto} agregado al carrito</span>
+            `;
+            
+            setTimeout(() => {
+                toast.classList.add('visible');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 3000);
+        }
+
+        const botonesAgregar = document.querySelectorAll('.btn-agregar');
+        botonesAgregar.forEach(boton => {
+            boton.addEventListener('click', (e) => {
+                const tarjeta = e.target.closest('.card-horizontal');
+                if (tarjeta) {
+                    const producto = obtenerDatosProducto(tarjeta);
+                    agregarAlCarrito(producto);
+                    mostrarNotificacion(producto.nombre);
+                }
+            });
+        });
+    });
+</script>
+</body>
+<div id="modal-logout" class="fondo-modal-logout">
+    <div class="contenido-modal-logout">
+        
+        <div id="pantalla-pregunta">
+            <div style="font-size: 45px; margin-bottom: 15px;">👋</div>
+            
+            <h3 style="margin: 0 0 8px 0; font-size: 20px; color: #000000; font-weight: 700;">¿Seguro que quieres cerrar sesión?</h3>
+            <p style="margin: 0 0 24px 0; color: #666666; font-size: 14px;">Tendrás que volver a ingresar tus datos la próxima vez.</p>
+            
+            <div style="display: flex; justify-content: center; gap: 12px;">
+                <button type="button" id="btn-confirmar-logout-si" class="btn-modal-si">Sí, salir</button>
+                <button type="button" id="btn-confirmar-logout-no" class="btn-modal-no">Cancelar</button>
+            </div>
+        </div>
+
+        <div id="pantalla-procesando" style="display: none;">
+            <div class="spinner-carga"></div>
+            <h3 style="margin: 15px 0 0 0; font-size: 18px; color: #111111;">Cerrando sesión...</h3>
+        </div>
+</body>
+</html>

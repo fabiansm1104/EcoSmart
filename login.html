@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart - Iniciar Sesión</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #e3effa 0%, #ffffff 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center;">
+
+    <div style="background-color: #005c92; width: 100%; padding: 20px 0; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin-bottom: 40px;">
+        <div style="display: flex; align-items: center; gap: 18px;">
+            <img src="../img/logo.png" alt="Logo EcoSmart" style="width: 110px; height: auto;">
+            <h1 style="font-size: 46px; color: #ffffff; margin: 0; font-weight: 900; letter-spacing: 1px;">EcoSmart</h1>
+        </div>
+    </div>
+
+    <div style="background-color: #ffffff; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; box-sizing: border-box; margin: 20px;">
+        
+        <div id="contenedor-formulario">
+            <h2 style="margin-top: 0; font-size: 26px; font-weight: bold; color: #111111;">Iniciar Sesión</h2>
+            <p style="color: #666666; font-size: 14px; margin-bottom: 30px;">Ingresa tus datos de acceso</p>
+            
+            <form id="form-login">
+                <div style="text-align: left; margin-bottom: 20px;">
+                    <label style="display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #333333;">Correo electrónico</label>
+                    <input type="email.com" id="log-correo" required style="width: 100%; padding: 12px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; outline: none;">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 25px;">
+                    <label style="display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #333333;">Contraseña</label>
+                    <input type="password" id="log-pass" required style="width: 100%; padding: 12px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; outline: none;">
+                </div>
+                
+                <button type="submit" id="btn-ingresar-login" style="width: 100%; background-color: #00a2ff; color: white; border: none; padding: 14px; font-weight: bold; font-size: 16px; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Ingresar</button>
+                
+                <div id="error-mensaje" class="error-login-texto"></div>
+            </form>
+            
+            <p style="font-size: 14px; text-align: center; color: #555555; margin-top: 25px;">
+                ¿No tienes cuenta? <a href="registro.html" style="color: #00a2ff; text-decoration: none; font-weight: bold;">Regístrate aquí</a>
+            </p>
+        </div>
+
+        <div id="mensaje-bienvenida" class="mensaje-bienvenida-pantalla">
+            <h2 style="font-size: 32px; margin-bottom: 10px;">🚀 ¡Ingreso Exitoso!</h2>
+            <p id="texto-usuario-bienvenido" style="margin-bottom: 5px; font-weight: bold; color: #333;"></p>
+            <p style="color: #666666; margin-top: 0;">Preparando tu tienda EcoSmart...</p>
+        </div>
+    </div>
+
+    <style>
+        /* Contenedor del mensaje de éxito que estará oculto al principio */
+        .mensaje-bienvenida-pantalla {
+            display: none;
+            text-align: center;
+            animation: aparecerSuave 0.5s ease forwards;
+            padding: 20px 0;
+        }
+
+        .mensaje-bienvenida-pantalla h2 {
+            color: #00a2ff;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .mensaje-bienvenida-pantalla p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* Efecto para ocultar el formulario con una animación */
+        .ocultar-formulario {
+            animation: desaparecerHaciaArriba 0.5s ease forwards;
+        }
+
+        /* Animaciones */
+        @keyframes aparecerSuave {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes desaparecerHaciaArriba {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Estilo para el texto de error integrado */
+        .error-login-texto {
+            color: #ff4d4d;
+            font-size: 14px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+            font-weight: bold;
+            animation: aparecerSuave 0.3s ease;
+        }
+    </style>
+
+    <script>
+        document.getElementById("form-login").addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            const correo = document.getElementById("log-correo").value.trim();
+            const pass = document.getElementById("log-pass").value.trim();
+            const errorMensaje = document.getElementById("error-mensaje");
+            const btnIngresar = document.getElementById("btn-ingresar-login");
+            const contenedorFormulario = document.getElementById("contenedor-formulario");
+            const mensajeBienvenida = document.getElementById("mensaje-bienvenida");
+            const textoUsuarioBienvenido = document.getElementById("texto-usuario-bienvenido");
+
+            // Ocultar mensaje de error de intentos anteriores
+            errorMensaje.style.display = "none";
+
+            const usuarios = JSON.parse(localStorage.getItem("usuarios_ecosmart")) || [];
+            const usuarioValido = usuarios.find(u => u.correo === correo && u.pass === pass);
+
+            if (usuarioValido) {
+                // 1. Guardar sesión activa
+                localStorage.setItem("sesion_activa_ecosmart", JSON.stringify({ nombre: usuarioValido.nombre, correo: usuarioValido.correo }));
+                
+                // 2. Efecto visual de carga corta en el botón
+                btnIngresar.innerText = "Verificando...";
+                btnIngresar.disabled = true;
+
+                setTimeout(() => {
+                    // 3. Desvanecer la caja del formulario hacia arriba
+                    contenedorFormulario.classList.add("ocultar-formulario");
+                    
+                    setTimeout(() => {
+                        contenedorFormulario.style.display = "none";
+                        
+                        // 4. Mostrar letrero personalizado de bienvenida
+                        textoUsuarioBienvenido.innerText = `¡Bienvenido de nuevo, ${usuarioValido.nombre}!`;
+                        mensajeBienvenida.style.display = "block";
+                        
+                        // 5. Redirección automática limpia a los 2 segundos
+                        setTimeout(() => {
+                            window.location.href = "index.html";
+                        }, 2000);
+                        
+                    }, 500); // Espera que termine la animación de salida
+                }, 600); // Pequeña pausa simulada de carga del sistema
+
+            } else {
+                // Si los datos están mal, muestra la advertencia en texto rojo integrado
+                errorMensaje.innerText = "❌ El correo o la contraseña son incorrectos.";
+                errorMensaje.style.display = "block";
+            }
+        });
+    </script>
+</body>
+
+</html>
