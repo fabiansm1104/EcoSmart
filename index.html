@@ -20,7 +20,7 @@
 
     <div class="buscador" style="position: relative; display: flex; width: 45%;">
         <input type="text" id="input-busqueda-principal" placeholder="Buscar productos ecológicos..." style="width: 100%; padding: 12px 15px; border: none; background-color: #ffffff; color: #333; border-radius: 4px 0 0 4px; outline: none; font-size: 14px;">
-        <button type="button" style="padding: 12px 20px; background-color: #00a2ff; border: none; color: white; cursor: pointer; border-radius: 0 4px 4px 0; font-size: 16px;">🔍</button>
+        <button type="button" id="btn-busqueda-principal" style="padding: 12px 20px; background-color: #00a2ff; border: none; color: white; cursor: pointer; border-radius: 0 4px 4px 0; font-size: 16px;">🔍</button>
     </div>
 
     <div class="acciones-header" style="display: flex; align-items: center; gap: 25px;">
@@ -74,10 +74,14 @@
     </div>
 </div>
 
+<div id="notificacion-toast" class="notificacion-toast">
+    <div class="icono-chulito">✓</div>
+    <span id="texto-toast">Producto añadido al carrito</span>
+</div>
+
 <style>
     .enlace-menu:hover { color: #00a2ff !important; }
     
-    /* Estilos del menú desplegable */
     .dropdown-cuenta {
         display: none;
         position: absolute;
@@ -110,7 +114,6 @@
         display: block !important;
     }
 
-    /* MODAL LOGOUT */
     .fondo-modal-logout {
         display: none;
         position: fixed;
@@ -252,7 +255,6 @@
         width: 100%;
     }
     
-    /* RECREACIÓN ESTILO ÉXITO PERO CON COLOR AZUL ECOSMART */
     .btn-agregar {
         background-color: #00a2ff; 
         color: #ffffff;
@@ -279,7 +281,6 @@
         transform: scale(0.98);
     }
 
-    /* Notificación flotante de carrito */
     .notificacion-toast {
         position: fixed;
         bottom: 30px;
@@ -337,7 +338,7 @@ overflow: hidden;
 
 <main>
     <div style="padding: 0 40px; margin-top: 40px;">
-        <h2 id="titulo-seccion" style="font-size: 28px; color: #111111; font-weight: bold; margin-bottom: 5px;">Productos Destacados</h2>
+        <h2 id="titulo-seccion" style="font-size: 28px; color: #111111; font-weight: bold; margin-bottom: 5px;">Catálogo Completo</h2>
         <div style="width: 50px; height: 3px; background-color: #00a2ff; margin-bottom: 30px;"></div>
     </div>
 
@@ -345,178 +346,106 @@ overflow: hidden;
         <p style="font-size: 18px; color: #666;">No se encontraron productos que coincidan con tu búsqueda.</p>
     </div>
 
-    <div class="contenedor-productos-horizontal">
-        
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/nevera.jpg" alt="Nevera Mabe"></div>
-            <div class="card-info">
-                <h3>Nevera Mabe</h3>
-                <p class="descripcion">Nevera No Frost eficiente con gran espacio de organización.</p>
-                <p class="precio">$2.500.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/licuadora.jpg" alt="Licuadora Oster"></div>
-            <div class="card-info">
-                <h3>Licuadora Oster Reversible</h3>
-                <p class="descripcion">Motor reversible de alta potencia con vaso de vidrio refractario.</p>
-                <p class="precio">$180.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/microondas.jpg" alt="Microondas Recco"></div>
-            <div class="card-info">
-                <h3>Microondas Recco</h3>
-                <p class="descripcion">Diseño digital con menús preprogramados para descongelar fácil.</p>
-                <p class="precio">$450.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/freidora.jpg" alt="Freidora de Aire Digital"></div>
-            <div class="card-info">
-                <h3>Freidora de Aire Digital</h3>
-                <p class="descripcion">Cocina crujiente y saludable con flujo de aire rápido circular.</p>
-                <p class="precio">$320.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/sanduchera.jpg" alt="Sanduchera Eléctrica"></div>
-            <div class="card-info">
-                <h3>Sanduchera Eléctrica</h3>
-                <p class="descripcion">Placas de corte profundo con revestimiento antiadherente rápido.</p>
-                <p class="precio">$65.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/cafetera.jpg" alt="Cafetera Kalley"></div>
-            <div class="card-info">
-                <h3>Cafetera de Goteo Kalley</h3>
-                <p class="descripcion">Filtro permanente lavable con jarra de vidrio de alta resistencia.</p>
-                <p class="precio">$120.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/espresso.jpg" alt="Cafetera Espresso Oster"></div>
-            <div class="card-info">
-                <h3>Cafetera Espresso Oster</h3>
-                <p class="descripcion">Bomba de 15 bares para un espresso cremoso de nivel profesional.</p>
-                <p class="precio">$290.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/arrocera.jpg" alt="Arrocera Imusa"></div>
-            <div class="card-info">
-                <h3>Olla Arrocera Imusa</h3>
-                <p class="descripcion">Capacidad ideal con recipiente removible antiadherente y vaporera.</p>
-                <p class="precio">$150.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/limpia_vidrios.jpg" alt="Limpiador de Vidrios"></div>
-            <div class="card-info">
-                <h3>Hobot 388 Limpia Vidrios Inteligente</h3>
-                <p class="descripcion">Robot limpiavidrios automático con control remoto y acabado sin manchas.</p>
-                <p class="precio">$1.150.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/lavadora_superior.jpg" alt="Lavadora Superior"></div>
-            <div class="card-info">
-                <h3>Whirlpool 19kg Carga Superior</h3>
-                <p class="descripcion">Lavadora automática de carga superior con funciones inteligentes y ahorro de agua.</p>
-                <p class="precio">$2.400.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card-horizontal">
-            <div class="card-img-container"><img src="../img/robot_aspiradora.jpg" alt="Aspiradora Robot EcoClean"></div>
-            <div class="card-info">
-                <h3>Aspiradora Robot EcoClean</h3>
-                <p class="descripcion">Limpieza autónoma programable ideal para todo tipo de pisos.</p>
-                <p class="precio">$890.000</p>
-                <div class="botones-card-horizontal">
-                    <button type="button" class="btn-agregar">
-                        <span>Agregar</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    <div id="contenedor-dinamico-productos" class="contenedor-productos-horizontal"></div>
 </main>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        
+        // ====================================================================
+        // AQUÍ ESTÁN TUS 80 PRODUCTOS INTEGRADOS DIRECTAMENTE EN EL ARCHIVO
+        // ====================================================================
+        const BD_PRODUCTOS = [
+            // === COCINA ===
+            { nombre: "Nevera Mabe", descripcion: "Nevera No Frost de gran capacidad y sistema de ahorro energético.", precio: "$2.500.000", imagen: "../img/nevera.jpg" },
+            { nombre: "Licuadora Oster Reversible", descripcion: "Motor reversible de alta potencia con vaso de vidrio refractario.", precio: "$180.000", imagen: "../img/licuadora.jpg" },
+            { nombre: "Microondas Recco", descripcion: "Diseño digital con menús preprogramados para descongelar fácil.", precio: "$450.000", imagen: "../img/microondas.jpg" },
+            { nombre: "Sanduchera Eléctrica", descripcion: "Placas de corte profundo con revestimiento antiadherente rápido.", precio: "$65.000", imagen: "../img/sanduchera.jpg" },
+            { nombre: "Cafetera de Goteo Kalley", descripcion: "Filtro permanente lavable con jarra de vidrio de alta resistencia.", precio: "$120.000", imagen: "../img/cafetera.jpg" },
+            { nombre: "Cafetera Espresso Oster", descripcion: "Bomba de 15 bares para un espresso cremoso de nivel profesional.", precio: "$290.000", imagen: "../img/espresso.jpg" },
+            { nombre: "Olla Arrocera Imusa", descripcion: "Capacidad ideal con recipiente removible antiadherente y vaporera.", precio: "$150.000", imagen: "../img/arrocera.jpg" },
+            { nombre: "Batidora de Pedestal Kalley", descripcion: "Múltiples velocidades con tazón de acero inoxidable resistente.", precio: "$195.000", imagen: "../img/batidora.jpg" },
+            { nombre: "Campana Extractora Challenger", descripcion: "Filtro de carbón activado con alta capacidad de absorción de olores.", precio: "$380.000", imagen: "../img/campana.jpg" },
+            { nombre: "Cubierta de Vidrio Challenger", descripcion: "Estufa de empotrar a gas con quemadores de alta eficiencia.", precio: "$520.000", imagen: "../img/cubierta.jpg" },
+            { nombre: "Estufa de Piso Haceb", descripcion: "Estufa con horno integrado y encendido electrónico automático.", precio: "$1.100.000", imagen: "../img/estufapiso.jpg" },
+            { nombre: "Extractor de Jugos Oster", descripcion: "Filtro de acero para separar pulpa con boca de alimentación ancha.", precio: "$240.000", imagen: "../img/extractor.jpg" },
+            { nombre: "Freidora de Aire Digital", descripcion: "Cocina crujiente sin usar aceite mediante aire rápido circular.", precio: "$320.000", imagen: "../img/freidora.jpg" },
+            { nombre: "Hervidor Eléctrico Black+Decker", descripcion: "Apagado automático de seguridad con jarra inalámbrica práctica.", precio: "$115.000", imagen: "../img/hervidor.jpg" },
+            { nombre: "Horno Tostador Black+Decker", descripcion: "Horno compacto para gratinar y tostar con temporizador integrado.", precio: "$280.000", imagen: "../img/hornotostador.jpg" },
+            { nombre: "Lavavajillas Whirlpool", descripcion: "Múltiples ciclos de lavado inteligente a alta temperatura.", precio: "$1.950.000", imagen: "../img/lavavajillas.jpg" },
+            { nombre: "Olla a Presión Digital Oster", descripcion: "Múltiples funciones automáticas rápidas y seguras en un toque.", precio: "$430.000", imagen: "../img/ollapresion.jpg" },
+            { nombre: "Plancha de Asar Imusa", descripcion: "Superficie antiadherente plana ideal para carnes y asados familiares.", precio: "$165.000", imagen: "../img/Plancha de Asar.jpg" },
+            { nombre: "Procesador de Alimentos Ninja", descripcion: "Cuchillas de alta precisión para picar y hacer puré en segundos.", precio: "$340.000", imagen: "../img/procesador.jpg" },
+            { nombre: "Waflera Eléctrica Kalley", descripcion: "Placas circulares antiadherentes con luces indicadoras de estado.", precio: "$95.000", imagen: "../img/waflera.jpg" },
+
+            // === LIMPIEZA ===
+            { nombre: "Xiaomi Robot Vacuum E5", descripcion: "Tecnología avanzada para una limpieza profunda y eficiente.", precio: "$1.200.000", imagen: "../img/robot_aspiradora.jpg" },
+            { nombre: "LG WashTower WK22GS6", descripcion: "Torre de lavado inteligente con lavado y secado integrados.", precio: "$8.900.000", imagen: "../img/torre_lavado.jpg" },
+            { nombre: "Samsung Dryer DV22B6800EW", descripcion: "Secadora moderna con múltiples programas de secado rápido.", precio: "$3.200.000", imagen: "../img/secadora_ropa.jpg" },
+            { nombre: "Kemei MQX-688 Quita Pelusas", descripcion: "Quita pelusas portátil recargable ideal para mantener tu ropa.", precio: "$85.000", imagen: "../img/quita_pelusas.jpg" },
+            { nombre: "Black+Decker HGS200 Plancha", descripcion: "Plancha vertical de vapor con calentamiento rápido y eficiente.", precio: "$260.000", imagen: "../img/plancha_vertical.jpg" },
+            { nombre: "Oster GCSTBS5956 Plancha", descripcion: "Plancha a vapor con base antiadherente y control térmico.", precio: "$180.000", imagen: "../img/plancha_vapor.jpg" },
+            { nombre: "Bissell PowerFresh Slim Steam", descripcion: "Mopa de vapor diseñada para desinfectar pisos profundamente.", precio: "$620.000", imagen: "../img/mopa_vapor.jpg" },
+            { nombre: "Xiaomi Moyu Mini Washer", descripcion: "Mini lavadora compacta perfecta para prendas delicadas.", precio: "$480.000", imagen: "../img/mini_lavadora.jpg" },
+            { nombre: "Hobot 388 Limpia Vidrios", descripcion: "Robot limpiavidrios automático con potente motor de succión.", precio: "$1.150.000", imagen: "../img/limpia_vidrios.jpg" },
+            { nombre: "Haceb L800 Doble Tina", descripcion: "Lavadora de doble tina con sistema de lavado de alta potencia.", precio: "$1.350.000", imagen: "../img/lavadora_tinas.jpg" },
+            { nombre: "Whirlpool 19kg Carga Superior", descripcion: "Lavadora automática con filtros inteligentes de ahorro hídrico.", precio: "$2.400.000", imagen: "../img/lavadora_superior.jpg" },
+            { nombre: "Samsung WW90T554DAN Frontal", descripcion: "Lavadora frontal premium con tecnología EcoBubble inteligente.", precio: "$3.900.000", imagen: "../img/lavadora_frontal.jpg" },
+            { nombre: "Bissell ProHeat 2X Revolution", descripcion: "Lavadora de alfombras con eliminación de manchas críticas.", precio: "$1.950.000", imagen: "../img/lavadora_alfombras.jpg" },
+            { nombre: "Kärcher K3 Hidrolavadora", descripcion: "Hidrolavadora de alta presión ideal para exteriores y autos.", precio: "$850.000", imagen: "../img/hidrolavadora.jpg" },
+            { nombre: "Deerma CM800 Extractor Ácaros", descripcion: "Aspiradora UV especializada para colchones y sofás.", precio: "$320.000", imagen: "../img/extractor_acaros.jpg" },
+            { nombre: "Tefal Express Easy Centro", descripcion: "Centro de planchado profesional con flujo continuo de vapor.", precio: "$1.450.000", imagen: "../img/centro_planchado.jpg" },
+            { nombre: "Electrolux Brilladora Floor Pro", descripcion: "Brilladora eléctrica para acabados perfectos en pisos duros.", precio: "$780.000", imagen: "../img/brilladora.jpg" },
+            { nombre: "Dyson V8 Absolute Vertical", descripcion: "Aspiradora inalámbrica ultra liviana con succión ciclónica.", precio: "$2.300.000", imagen: "../img/aspiradora_vertical.jpg" },
+            { nombre: "Kärcher WD3 Aspiradora Tanque", descripcion: "Aspiradora robusta multiusos para sólidos y líquidos.", precio: "$540.000", imagen: "../img/aspiradora_tanque.jpg" },
+            { nombre: "Black+Decker Dustbuster", descripcion: "Aspiradora de mano inalámbrica para limpiezas rápidas y autos.", precio: "$210.000", imagen: "../img/aspiradora_mano.jpg" },
+
+            // === CLIMATIZACIÓN ===
+            { nombre: "Challenger AP-09 Aire Portátil", descripcion: "Aire acondicionado portátil compacto con enfriamiento rápido y bajo consumo energético.", precio: "$1.450.000", imagen: "../img/aire_portatil.jpg" },
+            { nombre: "LG Dual Inverter Split 12000 BTU", descripcion: "Sistema split silencioso con tecnología inverter y ahorro energético.", precio: "$2.800.000", imagen: "../img/aire_split.jpg" },
+            { nombre: "DeLonghi Dragon4", descripcion: "Calefactor de aceite con distribución uniforme del calor y sistema seguro.", precio: "$620.000", imagen: "../img/calefactor_aceite.jpg" },
+            { nombre: "Home Elements Calefactor", descripcion: "Calefactor compacto ideal para habitaciones y oficinas pequeñas.", precio: "$210.000", imagen: "../img/calefactor_pared.jpg" },
+            { nombre: "Taurus Babel RC", descripcion: "Calefactor tipo torre con control remoto y temperatura ajustable.", precio: "$390.000", imagen: "../img/calefactor_torre.jpg" },
+            { nombre: "VentDepot Cortina Industrial", descripcion: "Cortina de aire potente para entradas comerciales y espacios amplios.", precio: "$1.950.000", imagen: "../img/cortina_aire.jpg" },
+            { nombre: "Sevon Smart Dehumidifier", descripcion: "Reduce humedad y mejora la calidad del aire en interiores.", precio: "$480.000", imagen: "../img/deshumidificador.jpg" },
+            { nombre: "Symphony Diet 12T", descripcion: "Enfriador evaporativo portátil con flujo de aire de alta potencia.", precio: "$730.000", imagen: "../img/enfriador_aire.jpg" },
+            { nombre: "Ecolite Extractor de Aire", descripcion: "Extractor silencioso para baños, cocinas y espacios cerrados.", precio: "$180.000", imagen: "../img/extractor_pared.jpg" },
+            { nombre: "Levoit Classic 300S", descripcion: "Humidificador ultrasónico inteligente con control automático.", precio: "$350.000", imagen: "../img/humidificador.jpg" },
+            { nombre: "Vicks Vaporize VH750", descripcion: "Humidificador de vapor caliente ideal para climas secos.", precio: "$290.000", imagen: "../img/humidificador_vapor.jpg" },
+            { nombre: "VTA Mini Fan USB", descripcion: "Mini ventilador portátil ideal para escritorio y espacios pequeños.", precio: "$55.000", imagen: "../img/mini_ventilador.jpg" },
+            { nombre: "Kalley Pure Air Smart", descripcion: "Purificador de aire con filtro HEPA para eliminar partículas y polvo.", precio: "$680.000", imagen: "../img/purificador_aire.jpg" },
+            { nombre: "Samurai Turbo Silence", descripcion: "Ventilador potente de aspas con bajo nivel de ruido.", precio: "$210.000", imagen: "../img/ventilador_aspas.jpg" },
+            { nombre: "Industrial Fan Pro Max", descripcion: "Ventilador industrial de alta potencia para talleres y bodegas.", precio: "$980.000", imagen: "../img/ventilador_industrial.jpg" },
+            { nombre: "Imusa Fresh Desk", descripcion: "Ventilador de mesa compacto con velocidad ajustable.", precio: "$120.000", imagen: "../img/ventilador_mesa.jpg" },
+            { nombre: "KDK Wall Fan", descripcion: "Ventilador de pared oscilante con gran cobertura de aire.", precio: "$260.000", imagen: "../img/ventilador_pared.jpg" },
+            { nombre: "Samurai Silence Max", descripcion: "Ventilador pedestal silencioso con altura regulable.", precio: "$340.000", imagen: "../img/ventilador_pedestal.jpg" },
+            { nombre: "Hunter Ceiling Fan Deluxe", descripcion: "Ventilador de techo elegante con iluminación integrada.", precio: "$850.000", imagen: "../img/ventilador_techo.jpg" },
+            { nombre: "Oster Tower Breeze", descripcion: "Ventilador tipo torre moderno con control remoto y temporizador.", precio: "$430.000", imagen: "../img/ventilador_torre.jpg" },
+
+            // === CUIDADO PERSONAL ===
+            { nombre: "Philips OneBlade Pro", descripcion: "Afeitadora eléctrica recargable con cuchillas de precisión.", precio: "$320.000", imagen: "../img/afeitadora_hombre.jpg" },
+            { nombre: "Xiaomi Mi Smart Scale 2", descripcion: "Báscula inteligente digital de alta precisión.", precio: "$180.000", imagen: "../img/bascula_digital.jpg" },
+            { nombre: "Oral-B Pro 1000", descripcion: "Cepillo dental eléctrico con limpieza profunda.", precio: "$240.000", imagen: "../img/cepillo_electrico.jpg" },
+            { nombre: "Revlon One-Step", descripcion: "Cepillo secador para peinar y dar volumen.", precio: "$280.000", imagen: "../img/cepillo_secador.jpg" },
+            { nombre: "Wahl Home Cut", descripcion: "Máquina corta cabello profesional de alta potencia.", precio: "$260.000", imagen: "../img/corta_cabello.jpg" },
+            { nombre: "Philips Satinelle", descripcion: "Depiladora femenina compacta y eficiente.", precio: "$220.000", imagen: "../img/depiladora_mujer.jpg" },
+            { nombre: "Mirror Beauty LED", descripcion: "Espejo con iluminación LED profesional.", precio: "$150.000", imagen: "../img/espejo_luz.jpg" },
+            { nombre: "UV Clean Sanitizer", descripcion: "Esterilizador UV portátil antibacteriano.", precio: "$190.000", imagen: "../img/esterilizador_uv.jpg" },
+            { nombre: "Foot Spa Relax", descripcion: "Hidromasajeador para pies con burbujas relajantes.", precio: "$350.000", imagen: "../img/hidromasajeador_pies.jpg" },
+            { nombre: "Waterpik Cordless", descripcion: "Irrigador bucal portátil de limpieza profunda.", precio: "$420.000", imagen: "../img/irrigador_bucal.jpg" },
+            { nombre: "Foreo Luna Mini", descripcion: "Limpiador facial eléctrico para cuidado de la piel.", precio: "$490.000", imagen: "../img/limpiador_facial.jpg" },
+            { nombre: "Neck Relax Pro", descripcion: "Masajeador cervical ergonómico con calor.", precio: "$380.000", imagen: "../img/masajeador_cuello.jpg" },
+            { nombre: "Massage Gun Pro", descripcion: "Pistola de masaje muscular de alta intensidad.", precio: "$520.000", imagen: "../img/pistola_masaje.jpg" },
+            { nombre: "Remington Shine Therapy", descripcion: "Plancha profesional para cabello con cerámica.", precio: "$310.000", imagen: "../img/plancha_pelo.jpg" },
+            { nombre: "Philips Nose Trimmer", descripcion: "Recortador de nariz y orejas resistente al agua.", precio: "$120.000", imagen: "../img/recortador_nariz.jpg" },
+            { nombre: "Beard Trimmer Series 5000", descripcion: "Recortadora de barba inalámbrica profesional.", precio: "$260.000", imagen: "../img/recortadora_barba.jpg" },
+            { nombre: "Babyliss Curl Secret", descripcion: "Rizador automático para ondas profesionales.", precio: "$370.000", imagen: "../img/rizador_pelo.jpg" },
+            { nombre: "Facial Steam Spa", descripcion: "Sauna facial vaporizadora para limpieza profunda.", precio: "$210.000", imagen: "../img/sauna_facial.jpg" },
+            { nombre: "Dyson Supersonic", descripcion: "Secador de cabello profesional ultra rápido.", precio: "$1.950.000", imagen: "../img/secador_pelo.jpg" },
+            { nombre: "Omron M3", descripcion: "Tensiómetro digital automático de brazo.", precio: "$290.000", imagen: "../img/tensiometro.jpg" }
+        ];
+
+        // Lógica de Carrito de Compras
         const sesionActiva = JSON.parse(localStorage.getItem("sesion_activa_ecosmart"));
         const CLAVE_CARRITO = sesionActiva && sesionActiva.nombre 
             ? `ecosmart_carrito_${sesionActiva.nombre}` 
@@ -531,12 +460,11 @@ overflow: hidden;
                 circuloContador.innerText = totalArticulos;
             }
         }
-        
         actualizarCirculoHeader();
 
+        // Lógica de Menú de Cuenta
         const btnCuenta = document.querySelector(".btn-cuenta");
         const dropdownMenu = document.getElementById('mi-cuenta-dropdown');
-        
         const laceLogin = document.querySelector(".enlace-login");
         const laceRegistro = document.querySelector(".enlace-registro");
         const lacePerfil = document.querySelector(".enlace-perfil");
@@ -554,11 +482,6 @@ overflow: hidden;
             if (laceRegistro) laceRegistro.style.display = "none";
             if (lacePerfil) lacePerfil.style.display = "block";
             if (laceLogout) laceLogout.style.display = "block";
-        } else {
-            if (laceLogin) laceLogin.style.display = "block";
-            if (laceRegistro) laceRegistro.style.display = "block";
-            if (lacePerfil) lacePerfil.style.display = "none";
-            if (laceLogout) laceLogout.style.display = "none";
         }
 
         if (btnCuenta && dropdownMenu) {
@@ -566,10 +489,7 @@ overflow: hidden;
                 e.stopPropagation();
                 dropdownMenu.classList.toggle("mostrar");
             });
-
-            document.addEventListener("click", () => {
-                dropdownMenu.classList.remove("mostrar");
-            });
+            document.addEventListener("click", () => dropdownMenu.classList.remove("mostrar"));
         }
 
         if (laceLogout) {
@@ -582,119 +502,180 @@ overflow: hidden;
             });
         }
 
-        if (btnLogoutNo) {
-            btnLogoutNo.addEventListener("click", () => {
-                modalLogout.style.display = "none";
-            });
-        }
-
+        if (btnLogoutNo) btnLogoutNo.addEventListener("click", () => modalLogout.style.display = "none");
         if (btnLogoutSi) {
             btnLogoutSi.addEventListener("click", () => {
                 pantallaPregunta.style.display = "none";
                 pantallaProcesando.style.display = "block";
                 localStorage.removeItem("sesion_activa_ecosmart");
                 localStorage.removeItem('ecosmart_carrito_invitado');
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 1500);
+                setTimeout(() => window.location.href = "index.html", 1500);
             });
         }
 
-        const inputBusqueda = document.getElementById('input-busqueda-principal');
-        const tarjetasProductos = document.querySelectorAll('.card-horizontal');
-        const msgNoResultados = document.getElementById('no-resultados-msg');
-        const heroBanner = document.getElementById('hero-banner');
-        const tituloSeccion = document.getElementById('titulo-seccion');
+        // Elementos de la interfaz de productos
+        const contenedorProductos = document.getElementById("contenedor-dinamico-productos");
+        const inputBusqueda = document.getElementById("input-busqueda-principal");
+        const btnBusqueda = document.getElementById("btn-busqueda-principal");
+        const msgNoResultados = document.getElementById("no-resultados-msg");
+        const tituloSeccion = document.getElementById("titulo-seccion");
+        const toast = document.getElementById("notificacion-toast");
+        const textoToast = document.getElementById("texto-toast");
 
+        // Renderizar elementos en pantalla
+        function renderizarProductos(lista) {
+            contenedorProductos.innerHTML = "";
+            if (!lista || lista.length === 0) {
+                msgNoResultados.style.display = "block";
+                return;
+            }
+            msgNoResultados.style.display = "none";
+
+            lista.forEach(producto => {
+                const tarjeta = document.createElement("div");
+                tarjeta.classList.add("card-horizontal");
+                tarjeta.innerHTML = `
+                    <div class="card-img-container">
+                        <img src="${producto.imagen}" alt="${producto.nombre}">
+                    </div>
+                    <div class="card-info">
+                        <h3>${producto.nombre}</h3>
+                        <p class="descripcion">${producto.descripcion}</p>
+                        <p class="precio">${producto.precio}</p>
+                        <div class="botones-card-horizontal">
+                            <button type="button" class="btn-agregar">
+                                <span>Agregar</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                tarjeta.querySelector(".btn-agregar").addEventListener("click", () => agregarAlCarrito(producto));
+                contenedorProductos.appendChild(tarjeta);
+            });
+        }
+
+        // Función para agregar al carrito
+        function agregarAlCarrito(producto) {
+            const itemExistente = carrito.find(item => item.nombre === producto.nombre);
+            if (itemExistente) {
+                itemExistente.cantidad += 1;
+            } else {
+                carrito.push({ nombre: producto.nombre, precio: producto.precio, imagen: producto.imagen, cantidad: 1 });
+            }
+            localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+            actualizarCirculoHeader();
+            if (textoToast && toast) {
+                textoToast.innerText = `¡${producto.nombre} agregado!`;
+                toast.classList.add("visible");
+                setTimeout(() => toast.classList.remove("visible"), 2500);
+            }
+        }
+
+ // Lógica de búsqueda interactiva corregida con retraso de scroll
+        function ejecutarBusqueda(evento) {
+            const consulta = inputBusqueda.value.toLowerCase().trim();
+            
+            if (consulta === "") {
+                tituloSeccion.innerText = "Productos Destacados";
+                const primerosDiez = BD_PRODUCTOS.slice(0, 10);
+                renderizarProductos(primerosDiez); 
+            } else {
+                tituloSeccion.innerText = `Resultados de: "${inputBusqueda.value}"`;
+                const filtrados = BD_PRODUCTOS.filter(prod => 
+                    prod.nombre.toLowerCase().includes(consulta) || 
+                    prod.descripcion.toLowerCase().includes(consulta)
+                );
+                renderizarProductos(filtrados);
+
+                // Solo desplaza si es Enter o clic en la lupa
+                if (!evento || evento.key === 'Enter') {
+                    // El setTimeout le da 100 milisegundos al HTML para acomodarse antes de bajar
+                    setTimeout(() => {
+                        tituloSeccion.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }, 100); 
+                }
+            }
+        }
+// Variable de control global
+        let yaHizoScroll = false;
+
+       function ejecutarBusqueda(evento) {
+            const consulta = inputBusqueda.value.toLowerCase().trim();
+            
+            if (consulta === "") {
+                tituloSeccion.innerText = "Productos Destacados";
+                const primerosDiez = BD_PRODUCTOS.slice(0, 10);
+                renderizarProductos(primerosDiez); 
+            } else {
+                tituloSeccion.innerText = `Resultados de: "${inputBusqueda.value}"`;
+                const filtrados = BD_PRODUCTOS.filter(prod => 
+                    prod.nombre.toLowerCase().includes(consulta) || 
+                    prod.descripcion.toLowerCase().includes(consulta)
+                );
+                renderizarProductos(filtrados);
+
+                // DETECCIÓN ESTRICTA: Solo baja si confirmas con Enter (tecla 13) o con la lupa (sin evento)
+                const esEnter = evento && (evento.key === 'Enter' || evento.keyCode === 13);
+                const esLupa = !evento;
+
+                if (esEnter || esLupa) {
+                    // Quitamos el foco del teclado para asegurar el movimiento
+                    inputBusqueda.blur(); 
+                    
+                    setTimeout(() => {
+                        const posicionTitulo = tituloSeccion.getBoundingClientRect().top + window.scrollY;
+                        window.scrollTo({
+                            top: posicionTitulo - 20, // Te deja ver perfectamente el título "Resultados de..."
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
+            }
+        }
+
+        // CONTROL DE ASIGNACIÓN DE EVENTOS
         if (inputBusqueda) {
-            inputBusqueda.addEventListener('input', (e) => {
-                const textoUsuario = e.target.value.toLowerCase().trim();
-                let productosVisibles = 0;
-
-                tarjetasProductos.forEach(tarjeta => {
-                    const nombreProducto = tarjeta.querySelector('.card-info h3').innerText.toLowerCase();
-                    const descripcionProducto = tarjeta.querySelector('.card-info .descripcion').innerText.toLowerCase();
-
-                    if (nombreProducto.includes(textoUsuario) || descripcionProducto.includes(textoUsuario)) {
-                        tarjeta.style.display = 'flex';
-                        productosVisibles++;
-                    } else {
-                        tarjeta.style.display = 'none';
-                    }
-                });
-
-                if (textoUsuario.length > 0) {
-                    if (heroBanner) heroBanner.style.display = 'none';
-                    if (tituloSeccion) tituloSeccion.innerText = `Resultados de: "${e.target.value}"`;
-                    if (msgNoResultados) msgNoResultados.style.display = productosVisibles === 0 ? 'block' : 'none';
+            inputBusqueda.addEventListener("keyup", (e) => {
+                // Si presiona Enter, ejecuta la búsqueda y BAJA
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    ejecutarBusqueda(e);
                 } else {
-                    if (heroBanner) heroBanner.style.display = 'block';
-                    if (tituloSeccion) tituloSeccion.innerText = "Productos Destacados";
-                    if (msgNoResultados) msgNoResultados.style.display = 'none';
+                    // Si escribe cualquier otra letra, filtra abajo en silencio pero NO mueve la pantalla
+                    const consulta = inputBusqueda.value.toLowerCase().trim();
+                    if (consulta === "") {
+                        tituloSeccion.innerText = "Productos Destacados";
+                        renderizarProductos(BD_PRODUCTOS.slice(0, 10));
+                    } else {
+                        tituloSeccion.innerText = `Resultados de: "${inputBusqueda.value}"`;
+                        const filtrados = BD_PRODUCTOS.filter(prod => 
+                            prod.nombre.toLowerCase().includes(consulta) || 
+                            prod.descripcion.toLowerCase().includes(consulta)
+                        );
+                        renderizarProductos(filtrados);
+                    }
                 }
             });
         }
-
-        function mostrarNotificacion(nombreProducto) {
-            let toast = document.getElementById('toast-notificacion');
-            if (!toast) {
-                toast = document.createElement('div');
-                toast.id = 'toast-notificacion';
-                toast.className = 'notificacion-toast';
-                document.body.appendChild(toast);
-            }
-
-            toast.innerHTML = `
-                <div class="icono-chulito">✓</div>
-                <span>"${nombreProducto}" agregado al carrito</span>
-            `;
-
-            setTimeout(() => {
-                toast.classList.add('visible');
-            }, 100);
-
-            setTimeout(() => {
-                toast.classList.remove('visible');
-            }, 2500);
+        
+        if (btnBusqueda) {
+            btnBusqueda.addEventListener("click", () => {
+                // Al hacer clic en la lupa, busca y BAJA obligatoriamente
+                ejecutarBusqueda();
+            });
         }
+        if (inputBusqueda) inputBusqueda.addEventListener("keyup", ejecutarBusqueda);
+        if (btnBusqueda) btnBusqueda.addEventListener("click", ejecutarBusqueda);
 
-        function obtenerDatosProducto(tarjeta) {
-            const nombre = tarjeta.querySelector('.card-info h3').innerText;
-            const precioTexto = tarjeta.querySelector('.card-info .precio').innerText;
-            const precio = parseFloat(precioTexto.replace(/[^0-9]/g, ''));
-            const imagen = tarjeta.querySelector('.card-img-container img').getAttribute('src');
-            return { nombre, precio, imagen };
-        }
-
-        function agregarAlCarrito(producto) {
-            carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
-            const existente = carrito.find(item => item.nombre === producto.nombre);
-            
-            if (existente) {
-                existente.cantidad += 1;
-            } else {
-                carrito.push({ 
-                    nombre: producto.nombre, 
-                    precio: producto.precio, 
-                    imagen: producto.imagen, 
-                    cantidad: 1 
-                });
-            }
-            
-            localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
-            actualizarCirculoHeader();
-        }
-
-        document.body.addEventListener('click', (e) => {
-            const boton = e.target.closest('.btn-agregar');
-            if (boton) {
-                const tarjeta = boton.closest('.card-horizontal');
-                const producto = obtenerDatosProducto(tarjeta);
-                agregarAlCarrito(producto);
-                mostrarNotificacion(producto.nombre);
-            }
-        });
+        // Renderizado inicial automático: ¡MUESTRA SOLO 10 AL PRINCIPIO!
+        tituloSeccion.innerText = "Productos Destacados";
+        const destacadosIniciales = BD_PRODUCTOS.slice(0, 10);
+        renderizarProductos(destacadosIniciales);
     });
 </script>
+
 </body>
 </html>
